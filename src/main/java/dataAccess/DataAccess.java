@@ -228,7 +228,7 @@ public class DataAccess {
 			throws RideAlreadyExistException, RideMustBeLaterThanTodayException {
 		System.out.println(
 				">> DataAccess: createRide=> from= " + from + " to= " + to + " driver=" + driverName + " date " + date);
-		if (driverName==null) return null;
+		if (driverName==null || from==null || to==null || date==null || nPlaces<0 || price<0.0 || from.equals(to)) return null;
 		try {
 			if (new Date().compareTo(date) > 0) {
 				System.out.println("ppppp");
