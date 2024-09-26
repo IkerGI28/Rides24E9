@@ -21,7 +21,7 @@ import exceptions.RideAlreadyExistException;
 import exceptions.RideMustBeLaterThanTodayException;
 
 /**
- * It implements the data access to the objectDb database
+ * It implements tthe data access to the objectDb database
  */
 public class DataAccess {
 	private EntityManager db;
