@@ -25,8 +25,12 @@
 </repositories>
 
 <properties>
-    <maven.compiler.target>1.8</maven.compiler.target>
-    <maven.compiler.source>1.8</maven.compiler.source>
+	<maven.compiler.target>1.8</maven.compiler.target>
+	<maven.compiler.source>1.8</maven.compiler.source>
+	<sonar.organization>pokoion</sonar.organization>
+	<sonar.host.url>https://sonarcloud.io</sonar.host.url>
+	<sonar.projectKey>9-taldea-rides24</sonar.projectKey>
+	<sonar.login>9960376f047f7fde48fec0b8afaad70402eeb532</sonar.login>
 </properties>
 
 <!-- https://mvnrepository.com/artifact/junit/junit -->
