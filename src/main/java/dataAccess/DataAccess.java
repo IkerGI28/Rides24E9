@@ -687,16 +687,13 @@ public class DataAccess {
 					Driver.class);
 			query.setParameter("username", username);
 			Driver driver = query.getSingleResult();
-
 			List<Ride> rides = driver.getCreatedRides();
 			List<Ride> activeRides = new ArrayList<>();
-
 			for (Ride ride : rides) {
 				if (ride.isActive()) {
 					activeRides.add(ride);
 				}
 			}
-
 			db.getTransaction().commit();
 			return activeRides;
 		} catch (Exception e) {
