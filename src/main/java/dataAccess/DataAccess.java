@@ -682,7 +682,6 @@ public class DataAccess {
 
 	public List<Ride> getRidesByDriver(String username) {
 		try {
-			db.getTransaction().begin();
 			TypedQuery<Driver> query = db.createQuery("SELECT d FROM Driver d WHERE d.username = :username",
 					Driver.class);
 			query.setParameter("username", username);
@@ -694,11 +693,8 @@ public class DataAccess {
 					activeRides.add(ride);
 				}
 			}
-			db.getTransaction().commit();
 			return activeRides;
 		} catch (Exception e) {
-			e.printStackTrace();
-			db.getTransaction().rollback();
 			return null;
 		}
 	}

@@ -1,6 +1,7 @@
 package domain;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -38,7 +39,7 @@ public class Ride implements Serializable {
 		this.date = date;
 		this.price = price;
 		this.driver = driver;
-		this.active = true;
+		this.active = true;		this.bookings = new ArrayList<Booking>();
 	}
 
 	/**
