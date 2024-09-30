@@ -104,11 +104,13 @@ public class DataAccess {
 			cal.set(2024, Calendar.APRIL, 20);
 			Date date4 = UtilDate.trim(cal.getTime());
 
-			driver1.addRide("Donostia", "Madrid", date2, 5, 20); //ride1
-			driver1.addRide("Irun", "Donostia", date2, 5, 2); //ride2
-			driver1.addRide("Madrid", "Donostia", date3, 5, 5); //ride3
+			final String DONOSTIA = "Donostia";
+			
+			driver1.addRide(DONOSTIA, "Madrid", date2, 5, 20); //ride1
+			driver1.addRide("Irun", DONOSTIA, date2, 5, 2); //ride2
+			driver1.addRide("Madrid", DONOSTIA, date3, 5, 5); //ride3
 			driver1.addRide("Barcelona", "Madrid", date4, 0, 10); //ride4
-			driver2.addRide("Donostia", "Hondarribi", date1, 5, 3); //ride5
+			driver2.addRide(DONOSTIA, "Hondarribi", date1, 5, 3); //ride5
 
 			Ride ride1 = driver1.getCreatedRides().get(0);
 			Ride ride2 = driver1.getCreatedRides().get(1);
@@ -121,7 +123,7 @@ public class DataAccess {
 			Booking book4 = new Booking(ride3, traveler1, 1);
 			Booking book3 = new Booking(ride2, traveler2, 2);
 			Booking book5 = new Booking(ride5, traveler1, 1);
-
+			
 			book1.setStatus("Accepted");
 			book2.setStatus("Rejected");
 			book3.setStatus("Accepted");
@@ -250,7 +252,7 @@ public class DataAccess {
 
 			return ride;
 		} catch (NullPointerException e) {
-			// TODO Auto-generated catch block
+            e.printStackTrace();
 			return null;
 		}
 		

@@ -69,7 +69,7 @@ public class GetRidesByDriverBDBlackTest {
 			sut.close();
 		}
 	}
-
+	
 	//Test case to test when the username is null
 	@Test
 	public void test4() {

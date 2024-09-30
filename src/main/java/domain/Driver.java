@@ -1,9 +1,12 @@
 package domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -21,15 +24,18 @@ public class Driver extends User implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@XmlIDREF
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	private List<Car> cars = new Vector<Car>();;
+	private List<Car> cars = new ArrayList<>();
 	@XmlIDREF
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private List<Ride> createdRides = new Vector<Ride>();
+	
+	transient Logger logger = Logger.getLogger(getClass().getName());
 
 	public Driver(String username, String passwd) {
 		super(username, passwd, "Driver");
 	}
-
+	
+	@Override
 	public String toString() {
 		return (super.toString());
 	}
@@ -103,7 +109,9 @@ public class Driver extends User implements Serializable {
 			index++;
 		}
 		if (encontrado) {
-				 System.out.println("posicion "+ pos);
+			    if (logger.isLoggable(Level.INFO)) {
+			        logger.info(String.format("Position: %d", pos));
+			    }
 				 r=createdRides.get(pos);
 				 System.out.println("ride recuperado "+r);
 				 createdRides.remove(pos);
