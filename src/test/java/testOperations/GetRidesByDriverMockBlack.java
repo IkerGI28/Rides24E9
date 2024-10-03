@@ -42,11 +42,6 @@ public class GetRidesByDriverMockBlack {
 	protected  EntityManager db;
 	@Mock
     protected  EntityTransaction  et;
-	
-	List<Ride> ridesEmpty = new ArrayList<>();
-	
-    LocalDate localDate = LocalDate.of(2026, 10, 2);
-    Date data = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
 	@Before
     public  void init() {
@@ -110,7 +105,6 @@ public class GetRidesByDriverMockBlack {
 			try {
 				rideDate = sdf.parse("05/10/2026");
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			driverTest.addRide("Donostia", "Barcelona", rideDate, 2, 10);
