@@ -61,6 +61,14 @@ public class DataAccess {
 		this.db = db;
 	}
 
+	//crate an array from 1 to 100
+	public List<Integer> getNumbers() {
+		List<Integer> numbers = new ArrayList<>();
+		for (int i = 1; i <= 100; i++) {
+			numbers.add(i);
+		}
+		return numbers;
+	}
 	/**
 	 * This is the data access method that initializes the database with some events
 	 * and questions. This method is invoked by the business logic (constructor of
@@ -105,7 +113,6 @@ public class DataAccess {
 			Date date4 = UtilDate.trim(cal.getTime());
 
 			final String DONOSTIA = "Donostia";
-			
 			driver1.addRide(DONOSTIA, "Madrid", date2, 5, 20); //ride1
 			driver1.addRide("Irun", DONOSTIA, date2, 5, 2); //ride2
 			driver1.addRide("Madrid", DONOSTIA, date3, 5, 5); //ride3
@@ -135,12 +142,15 @@ public class DataAccess {
 			db.persist(book3);
 			db.persist(book4);
 			db.persist(book5);
-
-			Movement m1 = new Movement(traveler1, "BookFreeze", 20);
-			Movement m2 = new Movement(traveler1, "BookFreeze", 40);
-			Movement m3 = new Movement(traveler1, "BookFreeze", 5);
-			Movement m4 = new Movement(traveler2, "BookFreeze", 4);
-			Movement m5 = new Movement(traveler1, "BookFreeze", 3);
+			
+			 
+			final String bookFreeze = "BookFreeze";
+			
+			Movement m1 = new Movement(traveler1, bookFreeze, 20);
+			Movement m2 = new Movement(traveler1, bookFreeze, 40);
+			Movement m3 = new Movement(traveler1, bookFreeze, 5);
+			Movement m4 = new Movement(traveler2, bookFreeze, 4);
+			Movement m5 = new Movement(traveler1, bookFreeze, 3);
 			Movement m6 = new Movement(driver1, "Deposit", 15);
 			Movement m7 = new Movement(traveler1, "Deposit", 168);
 			

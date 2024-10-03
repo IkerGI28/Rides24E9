@@ -1,6 +1,8 @@
 package configuration;
 
 import java.io.File;
+import java.lang.System.Logger.Level;
+import java.util.logging.Logger;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -70,6 +72,7 @@ public class ConfigXML {
 		return businessLogicLocal;
 	}
 	private static ConfigXML theInstance = new ConfigXML();
+	transient Logger logger = Logger.getLogger(getClass().getName());
 
 	private ConfigXML(){
 		
@@ -125,7 +128,7 @@ public class ConfigXML {
 			  System.out.println("\t dataBaseInitialized="+isDatabaseInitialized); 
 					  
 		  } catch (Exception e) {
-			System.out.println("Error in ConfigXML.java: problems with "+ configFile);
+				  logger.info(String.format("Error in ConfigXML.java: problems with "+ configFile));
 		    e.printStackTrace();
 		  }		
 		
