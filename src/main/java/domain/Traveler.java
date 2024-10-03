@@ -26,7 +26,7 @@ public class Traveler extends User implements Serializable {
 
 	@XmlIDREF
 	@OneToMany(mappedBy = "traveler", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-	private List<Alert> alerts = new Vector<Alert>();
+	private List<Alert> alerts = new ArrayList<>();
 
 	public Traveler(String username, String passwd) {
 		super(username, passwd, "Traveler");

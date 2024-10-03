@@ -52,7 +52,7 @@ public class BezeroGUI extends JFrame {
 		// Lista
 		taula = new JTable();
 		List<Booking> travelList = appFacadeInterface.getBookingFromDriver(username);
-		List<Booking> BezeroLista = new ArrayList<>();
+		List<Booking> bezeroLista = new ArrayList<>();
 
 		scrollPane = new JScrollPane(taula);
 		getContentPane().add(scrollPane, BorderLayout.NORTH);
@@ -106,7 +106,7 @@ public class BezeroGUI extends JFrame {
 						Object[] rowData = { bo.getBookNumber(), dateFormat.format(bo.getRide().getDate()),
 								bo.getTraveler().getUsername(), status, er.getEgoera() };
 						model.addRow(rowData);
-						BezeroLista.add(bo);
+						bezeroLista.add(bo);
 					}
 
 				} else if (bo.getStatus().equals("Completed") || bo.getStatus().equals("Valued")
@@ -114,7 +114,7 @@ public class BezeroGUI extends JFrame {
 					Object[] rowData = { bo.getBookNumber(), dateFormat.format(bo.getRide().getDate()),
 							bo.getTraveler().getUsername(), status, "" };
 					model.addRow(rowData);
-					BezeroLista.add(bo);
+					bezeroLista.add(bo);
 				}
 
 			}
@@ -139,7 +139,7 @@ public class BezeroGUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				int pos = taula.getSelectedRow();
 				if (pos != -1) {
-					Booking bo = BezeroLista.get(pos);
+					Booking bo = bezeroLista.get(pos);
 					if (bo.getStatus().equals("Completed")) {
 						bo.setStatus("Valued");
 						appFacadeInterface.updateBooking(bo);
@@ -172,7 +172,7 @@ public class BezeroGUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				int pos = taula.getSelectedRow();
 				if (pos != -1) {
-					Booking booking = BezeroLista.get(pos);
+					Booking booking = bezeroLista.get(pos);
 					if (!taula.getValueAt(pos, 4).equals("")) {
 						double prez = booking.prezioaKalkulatu();
 						if (taula.getValueAt(pos, 4).equals("Erreklamazioa")) {
