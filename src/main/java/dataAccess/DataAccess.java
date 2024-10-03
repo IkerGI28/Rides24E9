@@ -105,11 +105,12 @@ public class DataAccess {
 			Date date4 = UtilDate.trim(cal.getTime());
 
 			final String DONOSTIA = "Donostia";
+			final String MADRID = "Madrid";
 			
-			driver1.addRide(DONOSTIA, "Madrid", date2, 5, 20); //ride1
+			driver1.addRide(DONOSTIA, MADRID, date2, 5, 20); //ride1
 			driver1.addRide("Irun", DONOSTIA, date2, 5, 2); //ride2
-			driver1.addRide("Madrid", DONOSTIA, date3, 5, 5); //ride3
-			driver1.addRide("Barcelona", "Madrid", date4, 0, 10); //ride4
+			driver1.addRide(MADRID, DONOSTIA, date3, 5, 5); //ride3
+			driver1.addRide("Barcelona", MADRID, date4, 0, 10); //ride4
 			driver2.addRide(DONOSTIA, "Hondarribi", date1, 5, 3); //ride5
 
 			Ride ride1 = driver1.getCreatedRides().get(0);

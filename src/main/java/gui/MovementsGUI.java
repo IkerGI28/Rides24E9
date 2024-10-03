@@ -46,7 +46,7 @@ public class MovementsGUI extends JFrame {
 		JButton jButtonClose = new JButton(ResourceBundle.getBundle("Etiquetas").getString("Close"));
 		jButtonClose.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				jButtonClose_actionPerformed(e);
+				botoiaitxi();
 				JFrame a = new MoneyGUI(username);
 				a.setVisible(true);
 			}
@@ -86,7 +86,7 @@ public class MovementsGUI extends JFrame {
 		taula.setModel(model);
 	}
 
-	private void jButtonClose_actionPerformed(ActionEvent e) {
+	private void botoiaitxi() {
 		this.setVisible(false);
 	}
 }

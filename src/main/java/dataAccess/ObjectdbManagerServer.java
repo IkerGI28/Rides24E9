@@ -15,6 +15,7 @@ import javax.swing.JTextArea;
 
 
 import java.awt.event.ActionListener;
+import java.util.logging.Logger;
 import java.awt.event.ActionEvent;
 
 /**
@@ -74,7 +75,8 @@ public class ObjectdbManagerServer extends JDialog {
 					public void actionPerformed(ActionEvent e) {
 						textArea.append("\n\n\nClosing the database... ");
 					    try {
-					    	System.out.println("Server close");
+					    	Logger logger = Logger.getLogger(getClass().getName());
+					    	logger.info("Server close");
 					    	 try {
 					    		    
 					    		    
