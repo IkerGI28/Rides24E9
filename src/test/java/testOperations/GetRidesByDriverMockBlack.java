@@ -35,7 +35,6 @@ public class GetRidesByDriverMockBlack {
 	static DataAccess sut;
 	
 	protected MockedStatic<Persistence> persistenceMock;
-
 	@Mock
 	protected  EntityManagerFactory entityManagerFactory;
 	@Mock
