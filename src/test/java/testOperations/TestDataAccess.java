@@ -9,8 +9,10 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 import configuration.ConfigXML;
+import domain.Booking;
 import domain.Driver;
 import domain.Ride;
+import domain.Traveler;
 
 
 public class TestDataAccess {
@@ -132,6 +134,22 @@ public class TestDataAccess {
 			} else 
 			return null;
 
+		}
+
+
+		public boolean existBooking(String username, Integer rideNumber) {
+			System.out.println(">> TestDataAccess: existBooking");
+			Traveler t = db.find(Traveler.class, username);
+			boolean res=false;
+			if (t!=null) {
+				for (Booking b : t.getBookedRides()) {
+					if (b.getRide().getRideNumber().equals(rideNumber))
+						res = true;
+				}
+			return res;
+            }
+            else
+            return res;
 		}
 
 
