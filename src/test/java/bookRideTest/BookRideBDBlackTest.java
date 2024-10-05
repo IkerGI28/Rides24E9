@@ -30,8 +30,9 @@ public class BookRideBDBlackTest {
 		Driver driverTest = new Driver("driverTest", "123456");
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		Date rideDate=null;
+		Ride ride = null;
 		try {
-			rideDate = sdf.parse("05/10/2026");
+			rideDate = sdf.parse("05/10/2031");
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -40,7 +41,7 @@ public class BookRideBDBlackTest {
 			sut.addTraveler(travelerTest.getUsername(), travelerTest.getPassword());
 			sut.addDriver(driverTest.getUsername(), driverTest.getPassword());
 			sut.gauzatuEragiketa(travelerTest.getUsername(), 100, true);
-			Ride ride = sut.createRide("Donostia", "Zarautz", rideDate, 5, 6, "driverTest");
+			ride = sut.createRide("Donostia", "Zarautz", rideDate, 5, 6, "driverTest");
 			assertTrue(sut.bookRide(travelerTest.getUsername(), ride, 1, 1));
 			testDA.open();
 			boolean exist = testDA.existBooking(travelerTest.getUsername(), ride.getRideNumber());
@@ -52,6 +53,7 @@ public class BookRideBDBlackTest {
 		} finally {
 			sut.deleteUser(travelerTest);
 			sut.deleteUser(driverTest);
+			sut.cancelRide(ride);
 			sut.close();
 		}
 	}

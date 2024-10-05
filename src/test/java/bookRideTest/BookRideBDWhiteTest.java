@@ -14,8 +14,6 @@ import dataAccess.DataAccess;
 import domain.Driver;
 import domain.Ride;
 import domain.Traveler;
-import exceptions.RideAlreadyExistException;
-import exceptions.RideMustBeLaterThanTodayException;
 
 public class BookRideBDWhiteTest {
 
@@ -114,8 +112,9 @@ public class BookRideBDWhiteTest {
 		Driver driverTest = new Driver("driverTest", "123456");
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		Date rideDate=null;
+		Ride ride = null;
 		try {
-			rideDate = sdf.parse("05/10/2026");
+			rideDate = sdf.parse("05/10/2044");
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -124,7 +123,7 @@ public class BookRideBDWhiteTest {
 			sut.addTraveler(travelerTest.getUsername(), travelerTest.getPassword());
 			sut.addDriver(driverTest.getUsername(), driverTest.getPassword());
 			sut.gauzatuEragiketa(travelerTest.getUsername(), 100, true);
-			Ride ride = sut.createRide("Donostia", "Zarautz", rideDate, 3, 10, "driverTest");
+			ride = sut.createRide("Donostia", "Zarautz", rideDate, 3, 10, "driverTest");
 			assertTrue(sut.bookRide(travelerTest.getUsername(), ride, 2, 3));
 		} catch(Exception e){ 
 			e.printStackTrace();
@@ -132,6 +131,7 @@ public class BookRideBDWhiteTest {
 		} finally {
 			sut.deleteUser(travelerTest);
 			sut.deleteUser(driverTest);
+			sut.cancelRide(ride);
 			sut.close();
 		}
 	}
