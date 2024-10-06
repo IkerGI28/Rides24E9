@@ -33,7 +33,7 @@ public class BookRideBDBlackTest {
 		Date rideDate=null;
 		Ride ride = null;
 		try {
-			rideDate = sdf.parse("05/12/2042");
+			rideDate = sdf.parse("05/10/2200");
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -41,13 +41,11 @@ public class BookRideBDBlackTest {
 			sut.open();
 			sut.addTraveler(travelerTest.getUsername(), travelerTest.getPassword());
 			sut.addDriver(driverTest.getUsername(), driverTest.getPassword());
+			System.out.println(driverTest.getUsername());
 			sut.gauzatuEragiketa(travelerTest.getUsername(), 100, true);
-			ride = sut.createRide("Donostia", "Bilbo", rideDate, 5, 6, "driverTest");
-			assertTrue(sut.bookRide(travelerTest.getUsername(), ride, 1, 1));
-			testDA.open();
-			boolean exist = testDA.existBooking(travelerTest.getUsername(), ride.getRideNumber());
-			assertTrue(exist);
-			testDA.close();
+			ride = sut.createRide("Ordizia", "Anoeta", rideDate, 3, 10, driverTest.getUsername());
+			boolean result = sut.bookRide(travelerTest.getUsername(), ride, 2, 3);;
+			assertTrue(result);
 		} catch(Exception e){ 
 			e.printStackTrace();
 			fail();

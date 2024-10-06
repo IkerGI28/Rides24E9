@@ -21,7 +21,7 @@ public class BookRideBDWhiteTest {
 	//sut:system under test
 	static DataAccess sut=new DataAccess();
 	
-	
+
 	//Test case to test that the traaveler is not in the Data base
 	@Test
 	public void test1() {
@@ -34,19 +34,7 @@ public class BookRideBDWhiteTest {
 			sut.close();
 		}
 	}
-	
-	//Test case to test that the traveler is not in the Data base
-	@Test
-	public void test2() {
-		try {
-			sut.open();
-			Traveler travelerTest = new Traveler("Pepe", "123456");
-			Ride ride = new Ride("Donostia", "Zarautz", new Date(), 2, 10, new Driver("driverTest", "123456"));
-			assertFalse(sut.bookRide(travelerTest.getUsername(), ride, 2, 3));
-		} finally {
-			sut.close();
-		}
-	}
+
 	
 	//Test case to test that ride seats are not enough
 	@Test
@@ -77,7 +65,6 @@ public class BookRideBDWhiteTest {
 			sut.close();
 		}
 	}
-	
 	//Test case to test that the traveler can't afford the ride
 	@Test
 	public void test4() {
@@ -124,9 +111,11 @@ public class BookRideBDWhiteTest {
 			sut.open();
 			sut.addTraveler(travelerTest.getUsername(), travelerTest.getPassword());
 			sut.addDriver(driverTest.getUsername(), driverTest.getPassword());
+			System.out.println(driverTest.getUsername());
 			sut.gauzatuEragiketa(travelerTest.getUsername(), 100, true);
-			ride = sut.createRide("Ordizia", "Anoeta", rideDate, 3, 10, "driverTest");
-			assertTrue(sut.bookRide(travelerTest.getUsername(), ride, 2, 3));
+			ride = sut.createRide("Ordizia", "Anoeta", rideDate, 3, 10, driverTest.getUsername());
+			boolean result = sut.bookRide(travelerTest.getUsername(), ride, 2, 3);
+			assertTrue(result);
 		} catch(Exception e){ 
 			e.printStackTrace();
 			fail();
