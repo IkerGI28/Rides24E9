@@ -1,4 +1,4 @@
-package testOperations;
+package getRidesByDriverTest;
 
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -6,9 +6,6 @@ import static org.junit.Assert.fail;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -30,18 +27,19 @@ import dataAccess.DataAccess;
 import domain.Driver;
 import domain.Ride;
 
-public class GetRidesByDriverMockBlack {
+public class GetRidesByDriverMockWhiteTest {
 
 	static DataAccess sut;
 	
 	protected MockedStatic<Persistence> persistenceMock;
+
 	@Mock
 	protected  EntityManagerFactory entityManagerFactory;
 	@Mock
 	protected  EntityManager db;
 	@Mock
     protected  EntityTransaction  et;
-
+    
 	@Before
     public  void init() {
         MockitoAnnotations.openMocks(this);
@@ -59,16 +57,17 @@ public class GetRidesByDriverMockBlack {
 		persistenceMock.close();
     }
 	
+
 	// Test case to test that the driver is not in the Data base
 	@Test
 	public void test1() {
+		Driver driverTest = new Driver("driverTest", "123456");
 		try {
-			Driver driverTest = new Driver("driverTest", "123456");
+			sut.open();
 	        TypedQuery<Driver> query = Mockito.mock(TypedQuery.class);
 	        Mockito.when(db.createQuery("SELECT d FROM Driver d WHERE d.username = :username", Driver.class))
 	               .thenReturn(query);
 	        Mockito.when(query.getSingleResult()).thenReturn(null);
-			sut.open();
 			List<Ride> rides = sut.getRidesByDriver(driverTest.getUsername());
 			assertNull(rides);
 		} finally {
@@ -76,12 +75,12 @@ public class GetRidesByDriverMockBlack {
 		}
 	}
 
-	// Test case to test that the driver is in the DB and has no rides
+	// Test case to test that the driver has no rides and no active rides
 	@Test
-	public void test3() {
+	public void test2() {
+		Driver driverTest = new Driver("driverTest", "123456");
 		try {
 			sut.open();
-			Driver driverTest = new Driver("driverTest", "123456");	 
 	        TypedQuery<Driver> query = Mockito.mock(TypedQuery.class);
 	        Mockito.when(db.createQuery("SELECT d FROM Driver d WHERE d.username = :username", Driver.class))
 	               .thenReturn(query);
@@ -93,26 +92,60 @@ public class GetRidesByDriverMockBlack {
 		}
 	}
 
-	// Test case to test that the driver has rides
+	// Test case to test that the driver has rides but no active rides
 	@Test
-	public void test2() {
+	public void test3() {
+		Driver driverTest = new Driver("driverTest", "123456");
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		Date rideDate=null;
+		try {
+			rideDate = sdf.parse("05/10/2026");
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 		try {
 			sut.open();
-			Driver driverTest = new Driver("driverTest", "123456");	
-			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-			Date rideDate=null;
 			try {
-				rideDate = sdf.parse("05/10/2026");
-			} catch (ParseException e) {
+				//Mockito
+		        TypedQuery<Driver> query = Mockito.mock(TypedQuery.class);
+		        Mockito.when(db.createQuery("SELECT d FROM Driver d WHERE d.username = :username", Driver.class))
+		               .thenReturn(query);
+		        Mockito.when(query.getSingleResult()).thenReturn(driverTest);
+		        
+		        Mockito.when(db.find(Driver.class, driverTest.getUsername())).thenReturn(driverTest);
+		        Ride ride = driverTest.addRide("Donostia", "Barcelona", rideDate, 2, 10);
+				sut.cancelRide(ride);
+				//driverTest.addRide(ride);
+				List<Ride> rides = sut.getRidesByDriver(driverTest.getUsername());
+				assertTrue(rides.isEmpty());
+			} catch (Exception e) {
 				e.printStackTrace();
+				fail();
 			}
-			driverTest.addRide("Donostia", "Barcelona", rideDate, 2, 10);
-			//Mockito
-	        TypedQuery<Driver> query = Mockito.mock(TypedQuery.class);
-	        Mockito.when(db.createQuery("SELECT d FROM Driver d WHERE d.username = :username", Driver.class))
-	               .thenReturn(query);
-	        Mockito.when(query.getSingleResult()).thenReturn(driverTest);
+		} finally {
+			sut.close();
+		}
+	}
+
+	// Test case to test that the driver has active rides
+	@Test
+	public void test4() {
+		Driver driverTest = new Driver("driverTest", "123456");
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		Date rideDate=null;
+		try {
+			rideDate = sdf.parse("05/10/2026");
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		try {
+			sut.open();
 			try {
+				driverTest.addRide("Donostia", "Barcelona", rideDate, 2, 10);
+		        TypedQuery<Driver> query = Mockito.mock(TypedQuery.class);
+		        Mockito.when(db.createQuery("SELECT d FROM Driver d WHERE d.username = :username", Driver.class))
+		               .thenReturn(query);
+		        Mockito.when(query.getSingleResult()).thenReturn(driverTest);
 				List<Ride> rides = sut.getRidesByDriver(driverTest.getUsername());
 				assertTrue(!rides.isEmpty());
 			} catch (Exception e) {
@@ -123,21 +156,4 @@ public class GetRidesByDriverMockBlack {
 			sut.close();
 		}
 	}
-	
-	//Test case to test when the username is null
-	@Test
-	public void test4() {
-		try {
-			sut.open();
-			 TypedQuery<Driver> query = Mockito.mock(TypedQuery.class);
-		        Mockito.when(db.createQuery("SELECT d FROM Driver d WHERE d.username = :username", Driver.class))
-		               .thenReturn(query);
-		        Mockito.when(query.getSingleResult()).thenReturn(null);
-			List<Ride> rides = sut.getRidesByDriver(null);
-			assertNull(rides);
-		} finally {
-			sut.close();
-		}
-	}
-
 }
