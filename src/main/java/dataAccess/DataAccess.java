@@ -346,7 +346,7 @@ public class DataAccess {
 	public void close() {
 		db.close();
 		System.out.println("DataAcess closed");
-	}
+	} 
 
 	public User getUser(String erab){
 		if(erab == null) throw new NullPointerException();

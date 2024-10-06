@@ -52,6 +52,7 @@ public class gauzatuEragiketaBlackMockTest {
 		persistanceMock.close();
 	 }
 	
+	//erabiltzailea datubasean eta atera nahi den dirua, daukana bainan handiagoa da
 	@Test
 	public void test1() {
 		try {
@@ -59,7 +60,8 @@ public class gauzatuEragiketaBlackMockTest {
 			TypedQuery<User> query = Mockito.mock(TypedQuery.class);
 			Mockito.when(db.createQuery("SELECT u FROM User u WHERE u.username = :username", User.class)).thenReturn(query);
 			Mockito.when(query.getSingleResult()).thenReturn(driverTest);
-			boolean emaitza = sut.gauzatuEragiketa(driverTest.getUsername(), amount, false);
+			sut.gauzatuEragiketa(driverTest.getUsername(), 10, true);
+			boolean emaitza = sut.gauzatuEragiketa(driverTest.getUsername(), 30, false);
 			assertEquals(true, emaitza);
 		} catch (Exception e) {
 			sut.close();
@@ -69,6 +71,7 @@ public class gauzatuEragiketaBlackMockTest {
 		}
 	}
 	
+	//erabiltzailea datubasean eta dirua egoki ateratzen du
 	@Test
 	public void test2() {
 		try {
@@ -76,7 +79,7 @@ public class gauzatuEragiketaBlackMockTest {
 			TypedQuery<User> query = Mockito.mock(TypedQuery.class);
 			Mockito.when(db.createQuery("SELECT u FROM User u WHERE u.username = :username", User.class)).thenReturn(query);
 			Mockito.when(query.getSingleResult()).thenReturn(driverTest);
-			driverTest.setMoney(40);
+			sut.gauzatuEragiketa(driverTest.getUsername(), 40, true);
 			boolean emaitza = sut.gauzatuEragiketa(driverTest.getUsername(), amount, false);
 			assertEquals(true, emaitza);
 		} catch (Exception e) {
@@ -86,12 +89,12 @@ public class gauzatuEragiketaBlackMockTest {
 			sut.close();
 		}
 	}
-	
+	//erabiltzailea null da
 	@Test
 	public void test3() {
 		try {
 			sut.open();
-			boolean emaitza = sut.gauzatuEragiketa(null, amount, false);
+			boolean emaitza = sut.gauzatuEragiketa(null, 10, true);
 			assertEquals(false, emaitza);
 		} catch (Exception e) {
 			sut.close();
@@ -99,18 +102,24 @@ public class gauzatuEragiketaBlackMockTest {
 
 	}
 	
+	//depositatu nahi den dirua negatiboa da
 	@Test
 	public void test4() {
 		try {
 			sut.open();
-			boolean emaitza = sut.gauzatuEragiketa(driverTest.getUsername(), -20, true);
-			assertEquals(false, emaitza);
+			TypedQuery<User> query = Mockito.mock(TypedQuery.class);
+			Mockito.when(db.createQuery("SELECT u FROM User u WHERE u.username = :username", User.class)).thenReturn(query);
+			Mockito.when(query.getSingleResult()).thenReturn(driverTest);
+			sut.gauzatuEragiketa(driverTest.getUsername(), 20, true);
+			boolean emaitza = sut.gauzatuEragiketa(driverTest.getUsername(), -10, true);
+			assertEquals(true, emaitza);
 		} catch (Exception e) {
 			sut.close();
 		}
 
 	}
 	
+	//erabiltzailea ez dago datubasean
 	@Test
 	public void test5() {
 		int amount = 20;

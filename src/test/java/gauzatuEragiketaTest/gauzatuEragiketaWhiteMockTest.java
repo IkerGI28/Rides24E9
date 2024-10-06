@@ -48,6 +48,7 @@ public class gauzatuEragiketaWhiteMockTest {
 		persistanceMock.close();
 	 }
 	
+	//Errore bat exekuzioan, adibidez driver null
 	@Test
 	public void test1() {
 		try {
@@ -61,6 +62,7 @@ public class gauzatuEragiketaWhiteMockTest {
 
 	}
 	
+	//Ez dago datu basean
 	@Test
 	public void test2() {
 		int amount = 20;
@@ -77,6 +79,7 @@ public class gauzatuEragiketaWhiteMockTest {
 		}
 	}
 	
+	//Dirua ondo depositatu
 	@Test
 	public void test3() {
 		int amount = 20;
@@ -95,7 +98,7 @@ public class gauzatuEragiketaWhiteMockTest {
 			sut.close();
 		}
 	}
-	
+	//Dirua ateratzeko ez du diru nahikorik
 	@Test
 	public void test4() {
 		Driver driverTest = new Driver("gorka@gmail.com", "123");
@@ -104,7 +107,7 @@ public class gauzatuEragiketaWhiteMockTest {
 			TypedQuery<User> query = Mockito.mock(TypedQuery.class);
 			Mockito.when(db.createQuery("SELECT u FROM User u WHERE u.username = :username", User.class)).thenReturn(query);
 			Mockito.when(query.getSingleResult()).thenReturn(driverTest);
-			driverTest.setMoney(20);
+			sut.gauzatuEragiketa(driverTest.getUsername(),20,true);
 			boolean emaitza = sut.gauzatuEragiketa(driverTest.getUsername(), 40, false);
 			assertEquals(true, emaitza);
 		} catch (Exception e) {
@@ -114,17 +117,18 @@ public class gauzatuEragiketaWhiteMockTest {
 			sut.close();
 		}
 	}
-	
+	 
+	//Dirua ondo atera du
 	@Test
 	public void test5() {
 		int amount = 20;
 		Driver driverTest = new Driver("gorka@gmail.com", "123");
 		try {
 			sut.open();
-			driverTest.setMoney(40);
 			TypedQuery<User> query = Mockito.mock(TypedQuery.class);
 			Mockito.when(db.createQuery("SELECT u FROM User u WHERE u.username = :username", User.class)).thenReturn(query);
 			Mockito.when(query.getSingleResult()).thenReturn(driverTest);
+			sut.gauzatuEragiketa(driverTest.getUsername(), 40, true);
 			boolean emaitza = sut.gauzatuEragiketa(driverTest.getUsername(), amount, false);
 			assertEquals(true, emaitza);
 		} catch (Exception e) {

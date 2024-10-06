@@ -57,7 +57,7 @@ public class gauzatuEragiketaWhiteTest {
 
 	//Dirua ateratzeko ez du diru nahikorik
 	@Test
-	public void test4() {
+	public void test4() { 
 		try {
 			sut.open();
 			sut.addDriver(driverTest.getUsername(), driverTest.getPassword());
