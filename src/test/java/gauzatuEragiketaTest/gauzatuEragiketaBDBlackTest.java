@@ -7,7 +7,7 @@ import org.junit.Test;
 import dataAccess.DataAccess;
 import domain.Driver;
 
-public class gauzatuEragiketaBlackTest {
+public class gauzatuEragiketaBDBlackTest {
 	private DataAccess sut = new DataAccess();
 	private int amount = 20;
 	Driver driverTest = new Driver("iker", "123");

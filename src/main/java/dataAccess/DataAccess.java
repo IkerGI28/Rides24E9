@@ -572,7 +572,7 @@ public class DataAccess {
 			db.merge(ride);
 			db.merge(traveler);
 			return true;
-		} catch (NullPointerException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			db.getTransaction().rollback();
 			return false;

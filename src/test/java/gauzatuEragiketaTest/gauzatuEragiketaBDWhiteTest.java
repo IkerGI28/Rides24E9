@@ -7,7 +7,7 @@ import org.junit.Test;
 import dataAccess.DataAccess;
 import domain.Driver;
 
-public class gauzatuEragiketaWhiteTest {
+public class gauzatuEragiketaBDWhiteTest {
 
 	static DataAccess sut = new DataAccess();
 	private int amount = 20;
