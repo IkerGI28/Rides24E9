@@ -22,9 +22,12 @@ public class BookRideBDWhiteTest {
 	static DataAccess sut=new DataAccess();
 	
 
-	//Test case to test that the traaveler is not in the Data base
+	//Test case to test that exceptions are handled correctly
+	
+	
+	//Test case to test that the traveler is not in the Data base
 	@Test
-	public void test1() {
+	public void test2() {
 		try {
 			sut.open();
 			Traveler travelerTest = new Traveler("Pepe", "123456");
