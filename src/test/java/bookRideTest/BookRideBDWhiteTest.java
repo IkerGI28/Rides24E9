@@ -22,19 +22,9 @@ public class BookRideBDWhiteTest {
 	static DataAccess sut=new DataAccess();
 	
 
-	//Test case to test that user is null
-	@Test
-	public void test1() {
-		try {
-			sut.open();
-			Ride ride = new Ride("Donostia", "Zarautz", new Date(), 2, 10, new Driver("driverTest", "123456"));
-			boolean emaitza = sut.bookRide(null, ride, 2, 3);
-			assertFalse(emaitza);
-		} finally {
-			sut.close();
-		}
-	}
-	/*
+	//Test case to test that exceptions are handled correctly
+	
+	
 	//Test case to test that the traveler is not in the Data base
 	@Test
 	public void test2() {
@@ -137,5 +127,5 @@ public class BookRideBDWhiteTest {
 			sut.deleteUser(driverTest);
 			sut.close();
 		}
-	}*/
+	}
 }
