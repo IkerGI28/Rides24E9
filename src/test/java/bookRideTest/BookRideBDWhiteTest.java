@@ -106,7 +106,8 @@ public class BookRideBDWhiteTest {
 		}
 	}
 	
-	//Test case to test that the ride is booked correctly
+	//Test case to test that the ride is booked correctly, batzuetan true bueltatzen du eta beste batzuetan false
+	//ez dakit zergatik, inplementazioa ona dirudi.
 	@Test
 	public void test5() {
 		Traveler travelerTest = new Traveler("Patxi", "123456");

@@ -55,13 +55,13 @@ public class BookRideMockWhiteTest {
 		persistenceMock.close();
     }
 	
-	//Test case to test that exceptions are handled correctly
-	@Test
+	//Lehen eta bigarren proba kasuak berdinak dira.
+	/*@Test
 	public void test1() {
 		
-	}
+	}*/
 	
-	//Test case to test that the traveler is not in the Data base so it should return false
+	//False bueltatu behar du, ez delako travelerik aurkitu datubasean.
 	@Test
 	public void test2() {
 		Traveler travelerTest = new Traveler("travelerTest", "123456");
@@ -139,7 +139,7 @@ public class BookRideMockWhiteTest {
         }
 	}
 	
-	//Test case to test that the ride is booked correctly so it should return true
+	//True bueltatu beharko luke baina ez du true bueltatzen, false baizik.
 	@Test
 	public void test5() {
 		Traveler travelerTest = new Traveler("travelerTest", "123456");

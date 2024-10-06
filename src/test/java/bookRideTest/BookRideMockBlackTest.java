@@ -56,7 +56,7 @@ public class BookRideMockBlackTest {
 		persistenceMock.close();
 	}
 	
-	//Traveler in in the database, ride is in the database, booking is successful, so the method should return true
+	//Erreserba ondo egin behar da eta true bueltatu beharko luke baina false bueltatzen du.
 	@Test
 	public void test1() {
 		try {

@@ -24,6 +24,7 @@ public class BookRideBDBlackTest {
 	static TestDataAccess  testDA = new TestDataAccess();
 	
 	//Traveler in the DB and no attributes are null and booking is successful so it is created in the DB
+	//batzuetan true bueltatzen du eta beste batzuetan false ez dakit zergatik, inplementazioa ona dirudi.
 	@Test
 	public void test1() {
 		Traveler travelerTest = new Traveler("Patxi", "123456");
