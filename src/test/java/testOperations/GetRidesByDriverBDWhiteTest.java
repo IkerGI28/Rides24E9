@@ -35,7 +35,7 @@ public class GetRidesByDriverBDWhiteTest {
 			sut.close();
 		}
 	}
-
+ 
 	// Test case to test that the driver has no rides and no active rides
 	@Test
 	public void test2() {

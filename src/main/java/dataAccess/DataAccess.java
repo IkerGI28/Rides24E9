@@ -353,7 +353,7 @@ public class DataAccess {
 		query.setParameter("username", erab);
 		return query.getSingleResult();
 	}
-
+ 
 	public double getActualMoney(String erab) {
 		TypedQuery<Double> query = db.createQuery("SELECT u.money FROM User u WHERE u.username = :username",
 				Double.class);
