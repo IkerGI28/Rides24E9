@@ -409,6 +409,7 @@ public class DataAccess {
 	}
 
 	public Traveler getTraveler(String erab) {
+		if(erab == null) throw new NullPointerException();
 		TypedQuery<Traveler> query = db.createQuery("SELECT t FROM Traveler t WHERE t.username = :username",
 				Traveler.class);
 		query.setParameter("username", erab);
@@ -462,6 +463,7 @@ public class DataAccess {
 			Driver existingDriver = getDriver(username);
 			Traveler existingTraveler = getTraveler(username);
 			if (existingDriver != null || existingTraveler != null) {
+				db.getTransaction().commit();
 				return false;
 			}
 
@@ -483,6 +485,7 @@ public class DataAccess {
 			Driver existingDriver = getDriver(username);
 			Traveler existingTraveler = getTraveler(username);
 			if (existingDriver != null || existingTraveler != null) {
+				db.getTransaction().commit();
 				return false;
 			}
 
@@ -568,12 +571,14 @@ public class DataAccess {
 			traveler.setIzoztatutakoDirua(traveler.getIzoztatutakoDirua() + ridePriceDesk);
 			db.merge(ride);
 			db.merge(traveler);
-			db.getTransaction().commit();
 			return true;
-		} catch (Exception e) {
+		} catch (NullPointerException e) {
 			e.printStackTrace();
 			db.getTransaction().rollback();
 			return false;
+		}
+		finally {
+			db.getTransaction().commit();
 		}
 	}
 
@@ -584,9 +589,7 @@ public class DataAccess {
 	}
 
 	public List<Booking> getBookedRides(String username) {
-		db.getTransaction().begin();
 		Traveler trav = getTraveler(username);
-		db.getTransaction().commit();
 		return trav.getBookedRides();
 	}
 
@@ -644,7 +647,6 @@ public class DataAccess {
 
 	public List<Booking> getBookingFromDriver(String username) {
 		try {
-			db.getTransaction().begin();
 			TypedQuery<Driver> query = db.createQuery("SELECT d FROM Driver d WHERE d.username = :username",
 					Driver.class);
 			query.setParameter("username", username);
@@ -659,11 +661,9 @@ public class DataAccess {
 				}
 			}
 
-			db.getTransaction().commit();
 			return bookings;
 		} catch (Exception e) {
 			e.printStackTrace();
-			db.getTransaction().rollback();
 			return null;
 		}
 	}
@@ -799,12 +799,10 @@ public class DataAccess {
 
 	public List<Discount> getAllDiscounts() {
 		try {
-			db.getTransaction().begin();
 			TypedQuery<Discount> query = db.createQuery("SELECT d FROM Discount d ", Discount.class);
 			return query.getResultList();
 		} catch (Exception e) {
 			e.printStackTrace();
-			db.getTransaction().rollback();
 			return null;
 		}
 	}
@@ -907,35 +905,29 @@ public class DataAccess {
 
 	public List<Alert> getAlertsByUsername(String username) {
 		try {
-			db.getTransaction().begin();
 
 			TypedQuery<Alert> query = db.createQuery("SELECT a FROM Alert a WHERE a.traveler.username = :username",
 					Alert.class);
 			query.setParameter("username", username);
 			List<Alert> alerts = query.getResultList();
 
-			db.getTransaction().commit();
 
 			return alerts;
 		} catch (Exception e) {
 			e.printStackTrace();
-			db.getTransaction().rollback();
 			return null;
 		}
 	}
 
 	public Alert getAlert(int alertNumber) {
 		try {
-			db.getTransaction().begin();
 			TypedQuery<Alert> query = db.createQuery("SELECT a FROM Alert a WHERE a.alertNumber = :alertNumber",
 					Alert.class);
 			query.setParameter("alertNumber", alertNumber);
 			Alert alert = query.getSingleResult();
-			db.getTransaction().commit();
 			return alert;
 		} catch (Exception e) {
 			e.printStackTrace();
-			db.getTransaction().rollback();
 			return null;
 		}
 	}
