@@ -32,7 +32,7 @@ public class BookRideBDBlackTest {
 		Date rideDate=null;
 		Ride ride = null;
 		try {
-			rideDate = sdf.parse("05/10/2031");
+			rideDate = sdf.parse("05/12/2042");
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -41,7 +41,7 @@ public class BookRideBDBlackTest {
 			sut.addTraveler(travelerTest.getUsername(), travelerTest.getPassword());
 			sut.addDriver(driverTest.getUsername(), driverTest.getPassword());
 			sut.gauzatuEragiketa(travelerTest.getUsername(), 100, true);
-			ride = sut.createRide("Donostia", "Zarautz", rideDate, 5, 6, "driverTest");
+			ride = sut.createRide("Donostia", "Bilbo", rideDate, 5, 6, "driverTest");
 			assertTrue(sut.bookRide(travelerTest.getUsername(), ride, 1, 1));
 			testDA.open();
 			boolean exist = testDA.existBooking(travelerTest.getUsername(), ride.getRideNumber());
@@ -53,14 +53,41 @@ public class BookRideBDBlackTest {
 		} finally {
 			sut.deleteUser(travelerTest);
 			sut.deleteUser(driverTest);
-			sut.cancelRide(ride);
 			sut.close();
 		}
 	}
 	
-	//Parameter username is null, so it is not possible to book a ride and should return false
+	//Traveler is not in the DB but rest of data is, nevertheless it returns false since traveler cannot be found
 	@Test
 	public void test2() {
+		Traveler travelerTest = new Traveler("Patxi", "123456");
+		Driver driverTest = new Driver("driverTest", "123456");
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		Ride ride=null;
+		Date rideDate=null;
+		try {
+			rideDate = sdf.parse("23/05/2028");
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		try {
+            sut.open();
+            sut.addDriver(driverTest.getUsername(), driverTest.getPassword());
+            ride = sut.createRide("Milan", "Roma", rideDate, 5, 6, driverTest.getUsername());
+            boolean result = sut.bookRide(travelerTest.getUsername(), ride, 2, 3);
+            assertTrue(!result);
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail();
+        } finally {
+            sut.deleteUser(driverTest);
+            sut.close();
+        }
+	}
+	
+	//Parameter username is null, so it is not possible to book a ride and should return false
+	@Test
+	public void test3() {
 		Traveler travelerTest = new Traveler(null, "123456");
 		Ride r=null;
 		try {
@@ -75,7 +102,7 @@ public class BookRideBDBlackTest {
 	
 	//Ride is null, so it is not possible to book a ride and should return false
 	@Test
-	public void test3() {
+	public void test4() {
 		Traveler travelerTest = new Traveler("Patxi", "123456");
 		Ride r=null;
 		try {
@@ -90,7 +117,7 @@ public class BookRideBDBlackTest {
 	
 	//Booking seats amount is 0, so it is not possible to book a ride and should return false
 	@Test
-	public void test4() {
+	public void test5() {
 		Traveler travelerTest = new Traveler("Patxi", "123456");
 		Driver driverTest = new Driver("driverTest", "123456");
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -120,7 +147,7 @@ public class BookRideBDBlackTest {
 	
 	//Discount is negative, so it is not possible to book a ride and should return false
 	@Test
-	public void test5() {
+	public void test6() {
 		Traveler travelerTest = new Traveler("Patxi", "123456");
 		Driver driverTest = new Driver("driverTest", "123456");
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -150,7 +177,7 @@ public class BookRideBDBlackTest {
 	
 	//Booking seats amount is greater than available seats, so it is not possible to book a ride and should return false
 	@Test
-	public void test6() {
+	public void test7() {
 		Traveler travelerTest = new Traveler("Patxi", "123456");
 		Driver driverTest = new Driver("driverTest", "123456");
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -180,7 +207,7 @@ public class BookRideBDBlackTest {
 	
 	//Traveler cannot book a ride if there is not enough money in the account
 	@Test
-	public void test7() {
+	public void test8() {
 		Traveler travelerTest = new Traveler("Patxi", "123456");
 		Driver driverTest = new Driver("driverTest", "123456");
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");

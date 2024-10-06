@@ -14,6 +14,7 @@ import dataAccess.DataAccess;
 import domain.Driver;
 import domain.Ride;
 import domain.Traveler;
+import testOperations.TestDataAccess;
 
 public class BookRideBDWhiteTest {
 
@@ -21,8 +22,8 @@ public class BookRideBDWhiteTest {
 	static DataAccess sut=new DataAccess();
 	
 	
-	//Test case to test that the exceptions are handled correctly
-	/*@Test
+	//Test case to test that the traaveler is not in the Data base
+	@Test
 	public void test1() {
 		try {
 			sut.open();
@@ -32,7 +33,7 @@ public class BookRideBDWhiteTest {
 		} finally {
 			sut.close();
 		}
-	}*/
+	}
 	
 	//Test case to test that the traveler is not in the Data base
 	@Test
@@ -93,7 +94,7 @@ public class BookRideBDWhiteTest {
 			sut.open();
 			sut.addTraveler(travelerTest.getUsername(), travelerTest.getPassword());
 			sut.addDriver(driverTest.getUsername(), driverTest.getPassword());
-			Ride ride = sut.createRide("Donostia", "Zarautz", rideDate, 3, 10, "driverTest");
+			Ride ride = sut.createRide("Bilbo", "Mutriku", rideDate, 3, 10, "driverTest");
 			assertFalse(sut.bookRide(travelerTest.getUsername(), ride, 2, 3));
 		} catch(Exception e){ 
 			e.printStackTrace();
@@ -114,7 +115,7 @@ public class BookRideBDWhiteTest {
 		Date rideDate=null;
 		Ride ride = null;
 		try {
-			rideDate = sdf.parse("05/10/2044");
+			rideDate = sdf.parse("05/10/2200");
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -123,7 +124,7 @@ public class BookRideBDWhiteTest {
 			sut.addTraveler(travelerTest.getUsername(), travelerTest.getPassword());
 			sut.addDriver(driverTest.getUsername(), driverTest.getPassword());
 			sut.gauzatuEragiketa(travelerTest.getUsername(), 100, true);
-			ride = sut.createRide("Donostia", "Zarautz", rideDate, 3, 10, "driverTest");
+			ride = sut.createRide("Ordizia", "Anoeta", rideDate, 3, 10, "driverTest");
 			assertTrue(sut.bookRide(travelerTest.getUsername(), ride, 2, 3));
 		} catch(Exception e){ 
 			e.printStackTrace();
@@ -131,7 +132,6 @@ public class BookRideBDWhiteTest {
 		} finally {
 			sut.deleteUser(travelerTest);
 			sut.deleteUser(driverTest);
-			sut.cancelRide(ride);
 			sut.close();
 		}
 	}
