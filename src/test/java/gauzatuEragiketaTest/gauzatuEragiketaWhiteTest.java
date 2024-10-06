@@ -9,10 +9,11 @@ import domain.Driver;
 
 public class gauzatuEragiketaWhiteTest {
 
-	private DataAccess sut = new DataAccess();
+	static DataAccess sut = new DataAccess();
 	private int amount = 20;
 	Driver driverTest = new Driver("gorka@gmai.com", "123");
 
+	//Errore bat exekuzioan, adibidez driver null
 	@Test
 	public void test1() {
 		try {
@@ -25,7 +26,7 @@ public class gauzatuEragiketaWhiteTest {
 		}
 
 	}
-
+	//Ez dago datu basean
 	@Test
 	public void test2() {
 		try {
@@ -36,9 +37,9 @@ public class gauzatuEragiketaWhiteTest {
 		} catch (Exception e) {
 			sut.close();
 		}
-
 	}
-
+	
+	//Dirua ondo depositatu
 	@Test
 	public void test3() {
 		try {
@@ -54,12 +55,13 @@ public class gauzatuEragiketaWhiteTest {
 		}
 	}
 
+	//Dirua ateratzeko ez du diru nahikorik
 	@Test
 	public void test4() {
 		try {
 			sut.open();
-			driverTest.setMoney(20);
 			sut.addDriver(driverTest.getUsername(), driverTest.getPassword());
+			sut.gauzatuEragiketa(driverTest.getUsername(), amount, true);
 			boolean emaitza = sut.gauzatuEragiketa(driverTest.getUsername(), 40, false);
 			assertEquals(true, emaitza);
 		} catch (Exception e) {
@@ -70,13 +72,14 @@ public class gauzatuEragiketaWhiteTest {
 		}
 	}
 
+	//Dirua ondo atera du
 	@Test
 	public void test5() {
 		try {
 			sut.open();
-			driverTest.setMoney(40);
 			sut.addDriver(driverTest.getUsername(), driverTest.getPassword());
-			boolean emaitza = sut.gauzatuEragiketa(driverTest.getUsername(), amount, false);
+			sut.gauzatuEragiketa(driverTest.getUsername(), 40, true);
+			boolean emaitza = sut.gauzatuEragiketa(driverTest.getUsername(), 20, false);
 			assertEquals(true, emaitza);
 		} catch (Exception e) {
 			sut.close();

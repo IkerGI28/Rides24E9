@@ -348,10 +348,15 @@ public class DataAccess {
 		System.out.println("DataAcess closed");
 	}
 
-	public User getUser(String erab) {
-		TypedQuery<User> query = db.createQuery("SELECT u FROM User u WHERE u.username = :username", User.class);
-		query.setParameter("username", erab);
-		return query.getSingleResult();
+	public User getUser(String erab){
+		if(erab == null) throw new NullPointerException();
+		try {
+			TypedQuery<User> query = db.createQuery("SELECT u FROM User u WHERE u.username = :username", User.class);
+			query.setParameter("username", erab);
+			return query.getSingleResult();
+		} catch (Exception e) {
+			return null;
+		}
 	}
  
 	public double getActualMoney(String erab) {
@@ -498,6 +503,7 @@ public class DataAccess {
 				if (deposit) {
 					user.setMoney(currentMoney + amount);
 				} else {
+					System.out.println("duen dirua =" + user.getMoney() + "    " +"zenbat atera" +  amount);
 					if ((currentMoney - amount) < 0)
 						user.setMoney(0);
 					else
