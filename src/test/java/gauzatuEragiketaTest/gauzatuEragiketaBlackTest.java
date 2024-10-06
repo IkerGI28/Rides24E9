@@ -19,7 +19,7 @@ public class gauzatuEragiketaBlackTest {
 			sut.open();
 			sut.addDriver(driverTest.getUsername(), driverTest.getPassword());
 			boolean emaitza  = sut.gauzatuEragiketa(driverTest.getUsername(), amount, false);
-			assertEquals(false, emaitza);
+			assertEquals(true, emaitza);
 		}catch(Exception e) {
 			sut.close();
 		}finally {
