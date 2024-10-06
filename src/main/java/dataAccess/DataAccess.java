@@ -404,6 +404,7 @@ public class DataAccess {
 	}
 
 	public Traveler getTraveler(String erab) {
+		if(erab == null) throw new NullPointerException();
 		TypedQuery<Traveler> query = db.createQuery("SELECT t FROM Traveler t WHERE t.username = :username",
 				Traveler.class);
 		query.setParameter("username", erab);
@@ -565,7 +566,7 @@ public class DataAccess {
 			db.merge(ride);
 			db.merge(traveler);
 			return true;
-		} catch (Exception e) {
+		} catch (NullPointerException e) {
 			e.printStackTrace();
 			db.getTransaction().rollback();
 			return false;

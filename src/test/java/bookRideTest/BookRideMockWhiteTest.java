@@ -25,6 +25,7 @@ import dataAccess.DataAccess;
 import domain.Driver;
 import domain.Ride;
 import domain.Traveler;
+import domain.User;
 
 public class BookRideMockWhiteTest {
 
@@ -78,14 +79,19 @@ public class BookRideMockWhiteTest {
 		try {
 			sut.open();
 			try {
-				sut.addTraveler(travelerTest.getUsername(), travelerTest.getPassword());
-                sut.addDriver(driverTest.getUsername(), driverTest.getPassword());
                 Mockito.when(db.find(Driver.class, driverTest.getUsername())).thenReturn(driverTest);
-            	ride = sut.createRide("Donostia", "Zarautz", date, 4, 10, driverTest.getUsername());
-            	driverTest.addRide("Donostia", "Zarautz", date, 4, 10);
             	TypedQuery<Traveler> query = Mockito.mock(TypedQuery.class);
     			Mockito.when(db.createQuery("SELECT t FROM Traveler t WHERE t.username = :username", Traveler.class)).thenReturn(query);
     			Mockito.when(query.getSingleResult()).thenReturn(null);
+    			
+            	TypedQuery<Driver> query2 = Mockito.mock(TypedQuery.class);
+    			Mockito.when(db.createQuery("SELECT d FROM Driver d WHERE d.username = :username", Driver.class)).thenReturn(query2);
+    			Mockito.when(query2.getSingleResult()).thenReturn(driverTest);
+    			
+				sut.addTraveler(travelerTest.getUsername(), travelerTest.getPassword());
+                sut.addDriver(driverTest.getUsername(), driverTest.getPassword());
+            	ride = sut.createRide("Donostia", "Zarautz", date, 4, 10, driverTest.getUsername());
+            	driverTest.addRide("Donostia", "Zarautz", date, 4, 10);
     			boolean result = sut.bookRide(travelerTest.getUsername(), ride, 2, 3);
     			assertTrue(!result);
 			} catch (Exception e) {
@@ -112,15 +118,22 @@ public class BookRideMockWhiteTest {
 		}
 		try {
 			sut.open();
-			try {
-				sut.addTraveler(travelerTest.getUsername(), travelerTest.getPassword());
-                sut.addDriver(driverTest.getUsername(), driverTest.getPassword());
-                Mockito.when(db.find(Driver.class, driverTest.getUsername())).thenReturn(driverTest);
-            	ride = sut.createRide("Donostia", "Zarautz", date, 1, 10, driverTest.getUsername());
-            	driverTest.addRide("Donostia", "Zarautz", date, 1, 10);
+			try {      
 				TypedQuery<Traveler> query = Mockito.mock(TypedQuery.class);
 				Mockito.when(db.createQuery("SELECT t FROM Traveler t WHERE t.username = :username", Traveler.class)).thenReturn(query);
 				Mockito.when(query.getResultList()).thenReturn(Arrays.asList(travelerTest));
+				
+                Mockito.when(db.find(Driver.class, driverTest.getUsername())).thenReturn(driverTest);
+            	TypedQuery<Driver> query2 = Mockito.mock(TypedQuery.class);
+    			Mockito.when(db.createQuery("SELECT d FROM Driver d WHERE d.username = :username", Driver.class)).thenReturn(query2);
+    			Mockito.when(query2.getSingleResult()).thenReturn(driverTest);
+    			
+				sut.addTraveler(travelerTest.getUsername(), travelerTest.getPassword());
+                sut.addDriver(driverTest.getUsername(), driverTest.getPassword());
+
+            	ride = sut.createRide("Donostia", "Zarautz", date, 1, 10, driverTest.getUsername());
+            	driverTest.addRide("Donostia", "Zarautz", date, 1, 10);
+
 				boolean result = sut.bookRide(travelerTest.getUsername(), ride, 2, 3);
 				assertTrue(!result);
 			} catch (Exception e) {
@@ -148,14 +161,19 @@ public class BookRideMockWhiteTest {
         try {
             sut.open();
             try {
+				TypedQuery<Traveler> query = Mockito.mock(TypedQuery.class);
+				Mockito.when(db.createQuery("SELECT t FROM Traveler t WHERE t.username = :username", Traveler.class)).thenReturn(query);
+				Mockito.when(query.getResultList()).thenReturn(Arrays.asList(travelerTest));
+				
+                Mockito.when(db.find(Driver.class, driverTest.getUsername())).thenReturn(driverTest);
+            	TypedQuery<Driver> query2 = Mockito.mock(TypedQuery.class);
+    			Mockito.when(db.createQuery("SELECT d FROM Driver d WHERE d.username = :username", Driver.class)).thenReturn(query2);
+    			Mockito.when(query2.getSingleResult()).thenReturn(driverTest);
+    			
             	sut.addTraveler(travelerTest.getUsername(), travelerTest.getPassword());
                 sut.addDriver(driverTest.getUsername(), driverTest.getPassword());
-                Mockito.when(db.find(Driver.class, driverTest.getUsername())).thenReturn(driverTest);
             	ride = sut.createRide("Donostia", "Zarautz", date, 2, 10, driverTest.getUsername());
             	driverTest.addRide("Donostia", "Zarautz", date, 2, 10);
-            	TypedQuery<Traveler> query = Mockito.mock(TypedQuery.class);
-                Mockito.when(db.createQuery("SELECT t FROM Traveler t WHERE t.username = :username", Traveler.class)).thenReturn(query);
-                Mockito.when(query.getResultList()).thenReturn(Arrays.asList(travelerTest));
                 boolean result = sut.bookRide(travelerTest.getUsername(), ride, 2, 3);
                 assertTrue(!result);
 			} catch (Exception e) {
@@ -177,21 +195,31 @@ public class BookRideMockWhiteTest {
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
         try {
             date = sdf.parse("01-12-2065");
-            sut.gauzatuEragiketa(travelerTest.getUsername(), 100, true);
         } catch (Exception e) {
             e.printStackTrace();
         }
         try {
             sut.open();
             try {
+				TypedQuery<Traveler> query = Mockito.mock(TypedQuery.class);
+				Mockito.when(db.createQuery("SELECT t FROM Traveler t WHERE t.username = :username", Traveler.class)).thenReturn(query);
+				Mockito.when(query.getResultList()).thenReturn(Arrays.asList(travelerTest));
+				
+                Mockito.when(db.find(Driver.class, driverTest.getUsername())).thenReturn(driverTest);
+            	TypedQuery<Driver> query2 = Mockito.mock(TypedQuery.class);
+    			Mockito.when(db.createQuery("SELECT d FROM Driver d WHERE d.username = :username", Driver.class)).thenReturn(query2);
+    			Mockito.when(query2.getSingleResult()).thenReturn(driverTest);
+    			
+            	TypedQuery<User> query3 = Mockito.mock(TypedQuery.class);
+    			Mockito.when(db.createQuery("SELECT u FROM User u WHERE u.username = :username", User.class)).thenReturn(query3);
+    			Mockito.when(query3.getSingleResult()).thenReturn(travelerTest);
+    			
+                sut.gauzatuEragiketa(travelerTest.getUsername(), 100, true);
+    			
                 sut.addTraveler(travelerTest.getUsername(), travelerTest.getPassword());
                 sut.addDriver(driverTest.getUsername(), driverTest.getPassword());
-                Mockito.when(db.find(Driver.class, driverTest.getUsername())).thenReturn(driverTest);
             	ride = sut.createRide("Madrid", "Tolosa", date, 2, 2, driverTest.getUsername());
             	driverTest.addRide("Madrid", "Tolosa", date, 2, 2);
-            	TypedQuery<Traveler> query = Mockito.mock(TypedQuery.class);
-                Mockito.when(db.createQuery("SELECT t FROM Traveler t WHERE t.username = :username", Traveler.class)).thenReturn(query);
-                Mockito.when(query.getResultList()).thenReturn(Arrays.asList(travelerTest));
                 boolean result = sut.bookRide(travelerTest.getUsername(), ride, 1, 1);
                 assertTrue(result);
             } catch (Exception e) {
