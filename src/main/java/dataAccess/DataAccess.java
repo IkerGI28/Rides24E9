@@ -437,17 +437,10 @@ public class DataAccess {
 				String.class);
 		driverQuery.setParameter("username", erab);
 		List<String> driverResultList = driverQuery.getResultList();
-
 		TypedQuery<String> travelerQuery = db.createQuery("SELECT t.mota FROM Traveler t WHERE t.username = :username",
 				String.class);
 		travelerQuery.setParameter("username", erab);
 		List<String> travelerResultList = travelerQuery.getResultList();
-
-		/*TypedQuery<String> adminQuery = db.createQuery("SELECT a.mota FROM Admin a WHERE a.username = :username",
-				String.class);
-		adminQuery.setParameter("username", erab);
-		List<String> adminResultList = adminQuery.getResultList();*/
-
 		if (!driverResultList.isEmpty()) {
 			return driverResultList.get(0);
 		} else if (!travelerResultList.isEmpty()) {
@@ -541,37 +534,36 @@ public class DataAccess {
 		}
 	}
 
+	public boolean bookingGestion(Ride ride, int seats, double desk, Traveler traveler){
+		double ridePriceDesk = (ride.getPrice() - desk) * seats;
+		double availableBalance = traveler.getMoney();
+		if (availableBalance < ridePriceDesk) {
+			return false;
+		}
+		Booking booking = new Booking(ride, traveler, seats);
+		booking.setTraveler(traveler);
+		booking.setDeskontua(desk);
+		db.persist(booking);
+		ride.setnPlaces(ride.getnPlaces() - seats);
+		traveler.addBookedRide(booking);
+		traveler.setMoney(availableBalance - ridePriceDesk);
+		traveler.setIzoztatutakoDirua(traveler.getIzoztatutakoDirua() + ridePriceDesk);
+		db.merge(ride);
+		db.merge(traveler);
+		return true;
+	}
+	
 	public boolean bookRide(String username, Ride ride, int seats, double desk) {
 		try {
 			db.getTransaction().begin();
-
 			Traveler traveler = getTraveler(username);
 			if (traveler == null) {
 				return false;
 			}
-
 			if (ride.getnPlaces() < seats) {
 				return false;
 			}
-
-			double ridePriceDesk = (ride.getPrice() - desk) * seats;
-			double availableBalance = traveler.getMoney();
-			if (availableBalance < ridePriceDesk) {
-				return false;
-			}
-
-			Booking booking = new Booking(ride, traveler, seats);
-			booking.setTraveler(traveler);
-			booking.setDeskontua(desk);
-			db.persist(booking);
-
-			ride.setnPlaces(ride.getnPlaces() - seats);
-			traveler.addBookedRide(booking);
-			traveler.setMoney(availableBalance - ridePriceDesk);
-			traveler.setIzoztatutakoDirua(traveler.getIzoztatutakoDirua() + ridePriceDesk);
-			db.merge(ride);
-			db.merge(traveler);
-			return true;
+			return bookingGestion(ride, seats, desk, traveler);
 		} catch (Exception e) {
 			e.printStackTrace();
 			db.getTransaction().rollback();
@@ -947,7 +939,6 @@ public class DataAccess {
 	public boolean updateAlertaAurkituak(String username) {
 		try {
 			db.getTransaction().begin();
-
 			boolean alertFound = false;
 			TypedQuery<Alert> alertQuery = db.createQuery("SELECT a FROM Alert a WHERE a.traveler.username = :username",
 					Alert.class);
@@ -976,7 +967,6 @@ public class DataAccess {
 				}
 				db.merge(alert);
 			}
-
 			db.getTransaction().commit();
 			return alertFound;
 		} catch (Exception e) {
