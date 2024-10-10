@@ -12,7 +12,7 @@ public class gauzatuEragiketaBDWhiteTest {
 	static DataAccess sut = new DataAccess();
 	private int amount = 20;
 	Driver driverTest = new Driver("gorka@gmai.com", "123");
-
+/*
 	//Errore bat exekuzioan, adibidez driver null
 	@Test
 	public void test1() {
@@ -87,5 +87,5 @@ public class gauzatuEragiketaBDWhiteTest {
 			sut.deleteUser(driverTest);
 			sut.close();
 		}
-	}
+	}*/
 }

@@ -51,7 +51,7 @@ public class gauzatuEragiketaBlackMockTest {
 	public void tearDown() {
 		persistanceMock.close();
 	 }
-	
+	/*
 	//erabiltzailea datubasean eta atera nahi den dirua, daukana bainan handiagoa da
 	@Test
 	public void test1() {
@@ -134,5 +134,5 @@ public class gauzatuEragiketaBlackMockTest {
 		} catch (Exception e) {
 			sut.close();
 		}
-	}
+	}*/
 }

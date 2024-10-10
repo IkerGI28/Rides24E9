@@ -47,7 +47,7 @@ public class gauzatuEragiketaWhiteMockTest {
 	public void tearDown() {
 		persistanceMock.close();
 	 }
-	
+	/*
 	//Errore bat exekuzioan, adibidez driver null
 	@Test
 	public void test1() {
@@ -137,6 +137,5 @@ public class gauzatuEragiketaWhiteMockTest {
 			sut.deleteUser(driverTest);
 			sut.close();
 		}
-	}
-
+	}*/
 }

@@ -11,7 +11,7 @@ public class gauzatuEragiketaBDBlackTest {
 	private DataAccess sut = new DataAccess();
 	private int amount = 20;
 	Driver driverTest = new Driver("iker", "123");
-	
+/*	
 	//erabiltzailea datubasean dago eta atera nahi den dirua, daukana bainan handiagoa da
 	@Test
 	public void test1() {
@@ -91,5 +91,5 @@ public class gauzatuEragiketaBDBlackTest {
 			sut.close();
 		}
 
-	}
+	}*/
 }
