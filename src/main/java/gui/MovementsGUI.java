@@ -7,7 +7,9 @@ import domain.Movement;
 import domain.User;
 
 import java.awt.*;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,6 +20,8 @@ public class MovementsGUI extends JFrame {
 	private static BLFacade appFacadeInterface;
 	private JTable taula;
 
+	private final Map<String, String> movementLabels = new HashMap<>();
+	
 	public static BLFacade getBusinessLogic() {
 		return appFacadeInterface;
 	}
@@ -51,6 +55,14 @@ public class MovementsGUI extends JFrame {
 				a.setVisible(true);
 			}
 		});
+		
+		movementLabels.put("Deposit", "MoneyGUI.Deposit");
+		movementLabels.put("Withdrawal", "MoneyGUI.Withdraw");
+		movementLabels.put("BookFreeze", "MoneyGUI.Freeze");
+		movementLabels.put("BookDeny", "MoneyGUI.UnfreezeDeny");
+		movementLabels.put("UnfreezeCompleteT", "MoneyGUI.UnfreezeCompleteT");
+		movementLabels.put("UnfreezeCompleteD", "MoneyGUI.UnfreezeCompleteD");
+		movementLabels.put("UnfreezeNotComplete", "MoneyGUI.UnfreezeNotComplete");
 
 		this.getContentPane().add(jButtonClose, BorderLayout.SOUTH);
 
@@ -62,23 +74,7 @@ public class MovementsGUI extends JFrame {
 		DefaultTableModel model = new DefaultTableModel(columnNames, 0);
 
 		for (Movement movement : movementsList) {
-			String eragiketaMota;
-			if (movement.getEragiketa().equals("Deposit"))
-				eragiketaMota = ResourceBundle.getBundle("Etiquetas").getString("MoneyGUI.Deposit");
-			else if (movement.getEragiketa().equals("Withdrawal"))
-				eragiketaMota = ResourceBundle.getBundle("Etiquetas").getString("MoneyGUI.Withdraw");
-			else if (movement.getEragiketa().equals("BookFreeze"))
-				eragiketaMota = ResourceBundle.getBundle("Etiquetas").getString("MoneyGUI.Freeze");
-			else if (movement.getEragiketa().equals("BookDeny"))
-				eragiketaMota = ResourceBundle.getBundle("Etiquetas").getString("MoneyGUI.UnfreezeDeny");
-			else if (movement.getEragiketa().equals("UnfreezeCompleteT"))
-				eragiketaMota = ResourceBundle.getBundle("Etiquetas").getString("MoneyGUI.UnfreezeCompleteT");
-			else if (movement.getEragiketa().equals("UnfreezeCompleteD"))
-				eragiketaMota = ResourceBundle.getBundle("Etiquetas").getString("MoneyGUI.UnfreezeCompleteD");
-			else if (movement.getEragiketa().equals("UnfreezeNotComplete"))
-				eragiketaMota = ResourceBundle.getBundle("Etiquetas").getString("MoneyGUI.UnfreezeNotComplete");
-			else
-				eragiketaMota = ResourceBundle.getBundle("Etiquetas").getString("MoneyGUI.Unknown");
+			String eragiketaMota = getMovementLabel(movement.getEragiketa());
 			Object[] rowData = { eragiketaMota, movement.getKopurua() };
 			model.addRow(rowData);
 		}
@@ -86,6 +82,12 @@ public class MovementsGUI extends JFrame {
 		taula.setModel(model);
 	}
 
+    private String getMovementLabel(String eragiketa) {
+        return ResourceBundle.getBundle("Etiquetas").getString(
+            movementLabels.getOrDefault(eragiketa, "MoneyGUI.Unknown")
+        );
+    }
+    
 	private void botoiaitxi() {
 		this.setVisible(false);
 	}

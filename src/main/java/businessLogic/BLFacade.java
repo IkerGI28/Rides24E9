@@ -10,6 +10,7 @@ import domain.Booking;
 import domain.Car;
 import domain.Discount;
 import domain.Driver;
+import domain.ErreklamazioInfo;
 import domain.Complaint;
 import domain.Movement;
 import exceptions.RideMustBeLaterThanTodayException;
@@ -144,8 +145,7 @@ public interface BLFacade {
 
 	public void deleteCar(Car car);
 
-	public boolean erreklamazioaBidali(String username1, String username2, Date gaur, Booking book, String textua,
-			boolean aurk);
+	public boolean erreklamazioaBidali(ErreklamazioInfo errekInfo, Booking book, String textua, boolean aurk);
 
 	public void updateComplaint(Complaint erreklamazioa);
 
