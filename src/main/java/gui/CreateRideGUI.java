@@ -17,6 +17,7 @@ import businessLogic.BLFacade;
 import configuration.UtilDate;
 import domain.Car;
 import domain.Driver;
+import domain.OriginDestinationWhen;
 import domain.Ride;
 import exceptions.RideAlreadyExistException;
 import exceptions.RideMustBeLaterThanTodayException;
@@ -221,9 +222,10 @@ public class CreateRideGUI extends JFrame {
 				int inputSeats = (int) comboBoxSeats.getSelectedItem();
 				float price = Float.parseFloat(jTextFieldPrice.getText());
 
+				OriginDestinationWhen odw = new OriginDestinationWhen(fieldOrigin.getText(), fieldDestination.getText(),
+						UtilDate.trim(jCalendar.getDate()));
 				@SuppressWarnings("unused")
-				Ride r = facade.createRide(fieldOrigin.getText(), fieldDestination.getText(),
-						UtilDate.trim(jCalendar.getDate()), inputSeats, price, driver.getUsername());
+				Ride r = facade.createRide(odw, inputSeats, price, driver.getUsername());
 				jLabelMsg.setText(ResourceBundle.getBundle("Etiquetas").getString("CreateRideGUI.RideCreated"));
 
 			} catch (RideMustBeLaterThanTodayException | RideAlreadyExistException e1) {

@@ -18,6 +18,7 @@ import exceptions.RideAlreadyExistException;
 import exceptions.RideMustBeLaterThanTodayException;
 import testOperations.TestDataAccess;
 import domain.Driver;
+import domain.OriginDestinationWhen;
 
 public class CreateRideBDBlackTest {
 
@@ -56,9 +57,10 @@ public class CreateRideBDBlackTest {
 		
 		testDA.close();
 		try {
+			OriginDestinationWhen odw=new OriginDestinationWhen(rideFrom, rideTo, rideDate);
 			//invoke System Under Test (sut)  
 			sut.open();
-			 ride=sut.createRide(rideFrom, rideTo, rideDate, 2, 10, driverUsername);
+			 ride=sut.createRide(odw, 2, 10, driverUsername);
 			sut.close();			
 			
 			//verify the results
@@ -120,9 +122,10 @@ public class CreateRideBDBlackTest {
 		
 		testDA.close();
 		try {
+			OriginDestinationWhen odw=new OriginDestinationWhen(rideFrom, rideTo, rideDate);
 			//invoke System Under Test (sut)  
 			sut.open();
-			 ride=sut.createRide(rideFrom, rideTo, rideDate, 2, 10, driverUsername);
+			 ride=sut.createRide(odw, 2, 10, driverUsername);
 			sut.close();			
 			
 			//verify the results
@@ -181,9 +184,10 @@ public class CreateRideBDBlackTest {
 		
 		testDA.close();
 		try {
+			OriginDestinationWhen odw=new OriginDestinationWhen(rideFrom, rideTo, rideDate);
 			//invoke System Under Test (sut)  
 			sut.open();
-			 ride=sut.createRide(rideFrom, rideTo, rideDate, 2, 10, driverUsername);
+			 ride=sut.createRide(odw, 2, 10, driverUsername);
 			sut.close();			
 			
 			//verify the results
@@ -234,9 +238,10 @@ public class CreateRideBDBlackTest {
 			testDA.createDriver(driverUsername,null);
 		testDA.close();
 		try {
+			OriginDestinationWhen odw=new OriginDestinationWhen(rideFrom, rideTo, rideDate);
 			//invoke System Under Test (sut)  
 			sut.open();
-			 ride=sut.createRide(rideFrom, rideTo, rideDate, 2, 10, driverUsername);
+			 ride=sut.createRide(odw, 2, 10, driverUsername);
 			sut.close();			
 			
 			//verify the results
@@ -294,9 +299,10 @@ public class CreateRideBDBlackTest {
 		
 		testDA.close();
 		try {
+			OriginDestinationWhen odw=new OriginDestinationWhen(rideFrom, rideTo, rideDate);
 			//invoke System Under Test (sut)  
 			sut.open();
-			 ride=sut.createRide(rideFrom, rideTo, rideDate, -2, 0, driverUsername);
+			 ride=sut.createRide(odw, -2, 0, driverUsername);
 			sut.close();			
 			
 			//verify the results
@@ -356,9 +362,10 @@ public class CreateRideBDBlackTest {
 		
 		testDA.close();
 		try {
+			OriginDestinationWhen odw=new OriginDestinationWhen(rideFrom, rideTo, rideDate);
 			//invoke System Under Test (sut)  
 			sut.open();
-			 ride=sut.createRide(rideFrom, rideTo, rideDate, 2, -10, driverUsername);
+			 ride=sut.createRide(odw, 2, -10, driverUsername);
 			sut.close();			
 			
 			//verify the results
@@ -419,10 +426,10 @@ public class CreateRideBDBlackTest {
 				}	
 				
 				
-				
+				OriginDestinationWhen odw=new OriginDestinationWhen(rideFrom, rideTo, rideDate);
 				//invoke System Under Test (sut)  
 				sut.open();
-			    ride=sut.createRide(rideFrom, rideTo, rideDate, 2, 10, driverUsername);
+			    ride=sut.createRide(odw, 2, 10, driverUsername);
 
 				//verify the results
 				assertNull(ride);
@@ -474,10 +481,10 @@ public class CreateRideBDBlackTest {
 			    driverCreated=true;
 			}
 			testDA.close();		
-			
+			OriginDestinationWhen odw=new OriginDestinationWhen(rideFrom, rideTo, rideDate);
 			//invoke System Under Test (sut)  
 			sut.open();
-		    sut.createRide(rideFrom, rideTo, rideDate, 2, 10, driverUsername);
+		    sut.createRide(odw, 2, 10, driverUsername);
 			sut.close();
 			
 			fail();
@@ -522,9 +529,10 @@ public class CreateRideBDBlackTest {
 		
 		testDA.close();
 		try {
+			OriginDestinationWhen odw=new OriginDestinationWhen(rideFrom, rideFrom, rideDate);
 			//invoke System Under Test (sut)  
 			sut.open();
-			 ride=sut.createRide(rideFrom, rideFrom, rideDate, 2, 10, driverUsername);
+			 ride=sut.createRide(odw, 2, 10, driverUsername);
 			sut.close();			
 			
 			//verify the results
@@ -588,10 +596,10 @@ public class CreateRideBDBlackTest {
 			testDA.addDriverWithRide( driverUsername,  rideFrom,  rideTo,   rideDate,2,10);
 			testDA.close();
 			
-			
+			OriginDestinationWhen odw=new OriginDestinationWhen(rideFrom, rideTo, rideDate);
 			//invoke System Under Test (sut)  
 			sut.open();
-			Ride ride=sut.createRide(rideFrom, rideTo, rideDate, 2, 10, driverUsername);
+			Ride ride=sut.createRide(odw, 2, 10, driverUsername);
 			
 
 			sut.close();

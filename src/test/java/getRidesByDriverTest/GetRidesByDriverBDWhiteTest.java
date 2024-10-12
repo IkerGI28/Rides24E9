@@ -12,6 +12,7 @@ import org.junit.Test;
 
 import dataAccess.DataAccess;
 import domain.Driver;
+import domain.OriginDestinationWhen;
 import domain.Ride;
 
 public class GetRidesByDriverBDWhiteTest {
@@ -63,7 +64,8 @@ public class GetRidesByDriverBDWhiteTest {
 			sut.open();
 			sut.addDriver(driverTest.getUsername(), driverTest.getPassword());
 			try {
-				Ride ride = sut.createRide("Bilbao", "Donostia", rideDate, 4, (float) 1.5, driverTest.getUsername());
+				OriginDestinationWhen odw=new OriginDestinationWhen("Bilbao", "Donostia", rideDate);
+				Ride ride = sut.createRide(odw, 4, (float) 1.5, driverTest.getUsername());
 				sut.cancelRide(ride);
 				List<Ride> rides = sut.getRidesByDriver(driverTest.getUsername());
 				assertTrue(rides.isEmpty());
@@ -92,7 +94,8 @@ public class GetRidesByDriverBDWhiteTest {
 			sut.open();
 			sut.addDriver(driverTest.getUsername(), driverTest.getPassword());
 			try {
-				sut.createRide("Bilbao", "Donostia", rideDate, 4, (float) 1.5, driverTest.getUsername());
+				OriginDestinationWhen odw=new OriginDestinationWhen("Bilbao", "Donostia", rideDate);
+				sut.createRide(odw, 4, (float) 1.5, driverTest.getUsername());
 				List<Ride> rides = sut.getRidesByDriver(driverTest.getUsername());
 				assertTrue(!rides.isEmpty());
 			} catch (Exception e) {

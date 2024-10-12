@@ -239,37 +239,41 @@ public class DataAccess {
 	 * @throws RideAlreadyExistException         if the same ride already exists for
 	 *                                           the driver
 	 */
-	public Ride createRide(String from, String to, Date date, int nPlaces, float price, String driverName)
+	public Ride manageRide(OriginDestinationWhen fromtodate, int nPlaces, float price, String driverName) 
+			throws RideAlreadyExistException {
+		db.getTransaction().begin();
+		Driver driver = db.find(Driver.class, driverName);
+		if (driver.doesRideExists(fromtodate.getOrigin(), fromtodate.getDestination(), fromtodate.getDate())) {
+			db.getTransaction().commit();
+			throw new RideAlreadyExistException(
+					ResourceBundle.getBundle("Etiquetas").getString("DataAccess.RideAlreadyExist"));
+		}
+		Ride ride = driver.addRide(fromtodate.getOrigin(), fromtodate.getDestination(), fromtodate.getDate(), nPlaces, price);
+		// next instruction can be obviated
+		db.persist(driver);
+		db.getTransaction().commit();
+		return ride;
+	}
+	
+	public Ride createRide(OriginDestinationWhen fromtodate, int nPlaces, float price, String driverName)
 			throws RideAlreadyExistException, RideMustBeLaterThanTodayException {
-		System.out.println(
-				">> DataAccess: createRide=> from= " + from + " to= " + to + " driver=" + driverName + " date " + date);
-		if (driverName==null || from==null || to==null || date==null || nPlaces<0 || price<0.0 || from.equals(to)) return null;
+		System.out.println(">> DataAccess: createRide=> from= " + fromtodate.getOrigin() + " to= "
+				+ fromtodate.getDestination() + " driver=" + driverName + " date " + fromtodate.getDate());
+		if (driverName == null || fromtodate.getOrigin() == null || fromtodate.getDestination() == null
+				|| fromtodate.getDate() == null || nPlaces < 0 || price < 0.0
+				|| fromtodate.getOrigin().equals(fromtodate.getDestination()))
+			return null;
 		try {
-			if (new Date().compareTo(date) > 0) {
+			if (new Date().compareTo(fromtodate.getDate()) > 0) {
 				System.out.println("ppppp");
 				throw new RideMustBeLaterThanTodayException(
 						ResourceBundle.getBundle("Etiquetas").getString("CreateRideGUI.ErrorRideMustBeLaterThanToday"));
 			}
-
-			db.getTransaction().begin();
-			Driver driver = db.find(Driver.class, driverName);
-			if (driver.doesRideExists(from, to, date)) {
-				db.getTransaction().commit();
-				throw new RideAlreadyExistException(
-						ResourceBundle.getBundle("Etiquetas").getString("DataAccess.RideAlreadyExist"));
-			}
-			Ride ride = driver.addRide(from, to, date, nPlaces, price);
-			// next instruction can be obviated
-			db.persist(driver);
-			db.getTransaction().commit();
-
-			return ride;
+			return manageRide(fromtodate, nPlaces, price, driverName);
 		} catch (NullPointerException e) {
-            e.printStackTrace();
+			e.printStackTrace();
 			return null;
 		}
-		
-
 	}
 
 	/**

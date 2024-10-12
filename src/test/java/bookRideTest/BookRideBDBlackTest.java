@@ -250,6 +250,7 @@ import org.junit.Test;
 
 import dataAccess.DataAccess;
 import domain.Driver;
+import domain.OriginDestinationWhen;
 import domain.Ride;
 import domain.Traveler;
 import testOperations.TestDataAccess;
@@ -282,7 +283,8 @@ public class BookRideBDBlackTest {
 			sut.addDriver(driverTest.getUsername(), driverTest.getPassword());
 			System.out.println(driverTest.getUsername());
 			sut.gauzatuEragiketa(travelerTest.getUsername(), 100, true);
-			ride = sut.createRide("Ordizia", "Anoeta", rideDate, 3, 10, driverTest.getUsername());
+			OriginDestinationWhen odw=new OriginDestinationWhen("Ordizia", "Anoeta", rideDate);
+			ride = sut.createRide(odw, 3, 10, driverTest.getUsername());
 			boolean result = sut.bookRide(travelerTest.getUsername(), ride, 2, 3);;
 			assertTrue(result);
 		} catch(Exception e){ 
@@ -311,7 +313,8 @@ public class BookRideBDBlackTest {
 		try {
             sut.open();
             sut.addDriver(driverTest.getUsername(), driverTest.getPassword());
-            ride = sut.createRide("Milan", "Roma", rideDate, 5, 6, driverTest.getUsername());
+            OriginDestinationWhen odw=new OriginDestinationWhen("Milan", "Roma", rideDate);
+            ride = sut.createRide(odw, 5, 6, driverTest.getUsername());
             boolean result = sut.bookRide(travelerTest.getUsername(), ride, 2, 3);
             assertTrue(!result);
 		} catch (Exception e) {
@@ -370,7 +373,8 @@ public class BookRideBDBlackTest {
 			sut.addTraveler(travelerTest.getUsername(), travelerTest.getPassword());
 			sut.addDriver(driverTest.getUsername(), driverTest.getPassword());
 			sut.gauzatuEragiketa(travelerTest.getUsername(), 7, true);
-			Ride ride = sut.createRide("Donostia", "Zarautz", rideDate, 5, 6, driverTest.getUsername());
+			OriginDestinationWhen odw=new OriginDestinationWhen("Donostia", "Zarautz", rideDate);
+			Ride ride = sut.createRide(odw, 5, 6, driverTest.getUsername());
 			boolean result = sut.bookRide(travelerTest.getUsername(), ride, 0, 3);
 			assertTrue(result);
 		} catch (Exception e) {
@@ -400,7 +404,8 @@ public class BookRideBDBlackTest {
 			sut.addTraveler(travelerTest.getUsername(), travelerTest.getPassword());
 			sut.addDriver(driverTest.getUsername(), driverTest.getPassword());
 			sut.gauzatuEragiketa(travelerTest.getUsername(), 7, true);
-			Ride ride = sut.createRide("Donostia", "Zarautz", rideDate, 5, 6, driverTest.getUsername());
+			OriginDestinationWhen odw=new OriginDestinationWhen("Donostia", "Zarautz", rideDate);
+			Ride ride = sut.createRide(odw, 5, 6, driverTest.getUsername());
 			boolean result = sut.bookRide(travelerTest.getUsername(), ride, 2, -3);
 			assertTrue(!result);
 		} catch (Exception e) {
@@ -430,7 +435,8 @@ public class BookRideBDBlackTest {
 			sut.addTraveler(travelerTest.getUsername(), travelerTest.getPassword());
 			sut.addDriver(driverTest.getUsername(), driverTest.getPassword());
 			sut.gauzatuEragiketa(travelerTest.getUsername(), 7, true);
-			Ride ride = sut.createRide("Donostia", "Zarautz", rideDate, 5, 6, driverTest.getUsername());
+			OriginDestinationWhen odw=new OriginDestinationWhen("Donostia", "Zarautz", rideDate);
+			Ride ride = sut.createRide(odw, 5, 6, driverTest.getUsername());
 			boolean result = sut.bookRide(travelerTest.getUsername(), ride, 6, 3);
 			assertTrue(!result);
 		} catch (Exception e) {
@@ -460,7 +466,8 @@ public class BookRideBDBlackTest {
 			sut.addTraveler(travelerTest.getUsername(), travelerTest.getPassword());
 			sut.addDriver(driverTest.getUsername(), driverTest.getPassword());
 			sut.gauzatuEragiketa(travelerTest.getUsername(), 7, true);
-			Ride ride = sut.createRide("Donostia", "Zarautz", rideDate, 5, 6, driverTest.getUsername());
+			OriginDestinationWhen odw=new OriginDestinationWhen("Donostia", "Zarautz", rideDate);
+			Ride ride = sut.createRide(odw, 5, 6, driverTest.getUsername());
 			boolean result = sut.bookRide(travelerTest.getUsername(), ride, 2, 1);
 			assertTrue(!result);
 		} catch (Exception e) {

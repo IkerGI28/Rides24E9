@@ -21,6 +21,7 @@ import org.mockito.MockitoAnnotations;
 import dataAccess.DataAccess;
 import domain.Discount;
 import domain.Driver;
+import domain.OriginDestinationWhen;
 import exceptions.RideAlreadyExistException;
 import exceptions.RideMustBeLaterThanTodayException;
 
@@ -74,8 +75,9 @@ public class CreateRideMockTest {
 			//equivalent to
 			//Mockito.doReturn(driver).when (db).find (Driver.class, driverUsername);
 			//invoke System Under Test (sut)
+			OriginDestinationWhen odw=new OriginDestinationWhen(rideFrom, rideTo, rideDate);
 			sut.open();
-			sut.createRide(rideFrom,rideTo,rideDate,0,0,driverUsername);
+			sut.createRide(odw,0,0,driverUsername);
 			sut.close();
 			fail();
 		} catch (RideAlreadyExistException e) {
