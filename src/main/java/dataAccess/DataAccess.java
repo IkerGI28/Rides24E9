@@ -494,28 +494,31 @@ public class DataAccess {
 	}
 
 	public boolean gauzatuEragiketa(String username, double amount, boolean deposit) {
-	    try {
-	        db.getTransaction().begin();
-	        User user = getUser(username);
-	        if (user == null) {
-	            db.getTransaction().commit();
-	            return false; 
-	        }        
-	        double currentMoney = user.getMoney();
-	        if (deposit) {
-	            user.setMoney(currentMoney + amount);
-	        } else {
-	            System.out.println("duen dirua =" + user.getMoney() + "    " + "zenbat atera" + amount);
-	            user.setMoney(currentMoney >= amount ? currentMoney - amount:0); //Negatiboa bada 0 jarri
-	        }
-	        db.merge(user);
-	        db.getTransaction().commit();
-	        return true;
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	        db.getTransaction().rollback();
-	        return false;
-	    }
+		try {
+			db.getTransaction().begin();
+			User user = getUser(username);
+			if (user != null) {
+				double currentMoney = user.getMoney();
+				if (deposit) {
+					user.setMoney(currentMoney + amount);
+				} else {
+					System.out.println("duen dirua =" + user.getMoney() + "    " +"zenbat atera" +  amount);
+					if ((currentMoney - amount) < 0)
+						user.setMoney(0);
+					else
+						user.setMoney(currentMoney - amount);
+				}
+				db.merge(user);
+				db.getTransaction().commit();
+				return true;
+			}
+			db.getTransaction().commit();
+			return false;
+		} catch (Exception e) {
+			e.printStackTrace();
+			db.getTransaction().rollback();
+			return false;
+		}
 	}
 
 
@@ -933,44 +936,52 @@ public class DataAccess {
 	}
 
 	public boolean updateAlertaAurkituak(String username) {
-		try {
-			db.getTransaction().begin();
-			boolean alertFound = false;
-			TypedQuery<Alert> alertQuery = db.createQuery("SELECT a FROM Alert a WHERE a.traveler.username = :username",
-					Alert.class);
-			alertQuery.setParameter("username", username);
-			List<Alert> alerts = alertQuery.getResultList();
+	    try {
+	        db.getTransaction().begin();
+	        boolean alertFound = false;
 
-			TypedQuery<Ride> rideQuery = db
-					.createQuery("SELECT r FROM Ride r WHERE r.date > CURRENT_DATE AND r.active = true", Ride.class);
-			List<Ride> rides = rideQuery.getResultList();
+	        TypedQuery<Alert> alertQuery = db.createQuery(
+	            "SELECT a FROM Alert a WHERE a.traveler.username = :username", Alert.class);
+	        alertQuery.setParameter("username", username);
+	        List<Alert> alerts = alertQuery.getResultList();
 
-			for (Alert alert : alerts) {
-				boolean found = false;
-				for (Ride ride : rides) {
-					if (UtilDate.datesAreEqualIgnoringTime(ride.getDate(), alert.getDate())
-							&& ride.getFrom().equals(alert.getFrom()) && ride.getTo().equals(alert.getTo())
-							&& ride.getnPlaces() > 0) {
-						alert.setFound(true);
-						found = true;
-						if (alert.isActive())
-							alertFound = true;
-						break;
-					}
-				}
-				if (!found) {
-					alert.setFound(false);
-				}
-				db.merge(alert);
-			}
-			db.getTransaction().commit();
-			return alertFound;
-		} catch (Exception e) {
-			e.printStackTrace();
-			db.getTransaction().rollback();
-			return false;
-		}
+	        TypedQuery<Ride> rideQuery = db.createQuery(
+	            "SELECT r FROM Ride r WHERE r.date > CURRENT_DATE AND r.active = true", Ride.class);
+	        List<Ride> rides = rideQuery.getResultList();
+
+	        alertFound = processAlerts(alerts, rides);
+
+	        db.getTransaction().commit();
+	        return alertFound;
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        db.getTransaction().rollback();
+	        return false;
+	    }
 	}
+	
+	private boolean processAlerts(List<Alert> alerts, List<Ride> rides) {
+	    boolean alertFound = false;
+	    for (Alert alert : alerts) {
+	        alert.setFound(false);
+	        for (Ride ride : rides) {
+	            if (UtilDate.datesAreEqualIgnoringTime(ride.getDate(), alert.getDate()) &&
+	                ride.getFrom().equals(alert.getFrom()) &&
+	                ride.getTo().equals(alert.getTo()) &&
+	                ride.getnPlaces() > 0) {
+	                alert.setFound(true);
+	                if (alert.isActive()) {
+	                    alertFound = true;
+	                }
+	                break;  
+	            }
+	        }
+	        db.merge(alert);  
+	    }
+	    return alertFound;
+	}
+
 
 	public boolean createAlert(Alert alert) {
 		try {
