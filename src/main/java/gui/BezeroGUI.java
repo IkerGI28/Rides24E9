@@ -50,9 +50,9 @@ public class BezeroGUI extends JFrame {
 		getContentPane().setLayout(new BorderLayout(0, 0));
 
 		// Lista
-		taula = new JTable();
+		taula = new JTable(); 
 		List<Booking> travelList = appFacadeInterface.getBookingFromDriver(username);
-		List<Booking> bezeroLista = new ArrayList<>();
+		List<Booking> BezeroLista = new ArrayList<>();
 
 		scrollPane = new JScrollPane(taula);
 		getContentPane().add(scrollPane, BorderLayout.NORTH);
@@ -69,7 +69,30 @@ public class BezeroGUI extends JFrame {
 		if (travelList  != null) {
 			for (Booking bo : travelList ) {
 				
-				String status=checkStatus(bo);
+				String status;
+				switch (bo.getStatus()) {
+				case "Completed":
+					status = ResourceBundle.getBundle("Etiquetas").getString("Completed");
+					break;
+				case "Accepted":
+					status = ResourceBundle.getBundle("Etiquetas").getString("Accepted");
+					break;
+				case "Rejected":
+					status = ResourceBundle.getBundle("Etiquetas").getString("Rejected");
+					break;
+				case "NotCompleted":
+					status = ResourceBundle.getBundle("Etiquetas").getString("NotCompleted");
+					break;
+				case "Complained":
+					status = ResourceBundle.getBundle("Etiquetas").getString("Complained");
+					break;
+				case "Valued":
+					status = ResourceBundle.getBundle("Etiquetas").getString("Valued");
+					break;
+				default:
+					status = ResourceBundle.getBundle("Etiquetas").getString("NotDefined");
+					break;
+				}
 				
 				if (bo.getStatus().equals("NotCompleted")) {
 					Complaint er = appFacadeInterface.getComplaintsByBook(bo);
@@ -83,7 +106,7 @@ public class BezeroGUI extends JFrame {
 						Object[] rowData = { bo.getBookNumber(), dateFormat.format(bo.getRide().getDate()),
 								bo.getTraveler().getUsername(), status, er.getEgoera() };
 						model.addRow(rowData);
-						bezeroLista.add(bo);
+						BezeroLista.add(bo);
 					}
 
 				} else if (bo.getStatus().equals("Completed") || bo.getStatus().equals("Valued")
@@ -91,7 +114,7 @@ public class BezeroGUI extends JFrame {
 					Object[] rowData = { bo.getBookNumber(), dateFormat.format(bo.getRide().getDate()),
 							bo.getTraveler().getUsername(), status, "" };
 					model.addRow(rowData);
-					bezeroLista.add(bo);
+					BezeroLista.add(bo);
 				}
 
 			}
@@ -116,7 +139,7 @@ public class BezeroGUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				int pos = taula.getSelectedRow();
 				if (pos != -1) {
-					Booking bo = bezeroLista.get(pos);
+					Booking bo = BezeroLista.get(pos);
 					if (bo.getStatus().equals("Completed")) {
 						bo.setStatus("Valued");
 						appFacadeInterface.updateBooking(bo);
@@ -139,7 +162,9 @@ public class BezeroGUI extends JFrame {
 
 			}
 		});
-
+		
+	
+		
 		this.getContentPane().add(jButtonBaloratu, BorderLayout.WEST);
 
 		// Erraklamazio botoia
@@ -149,55 +174,10 @@ public class BezeroGUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				int pos = taula.getSelectedRow();
 				if (pos != -1) {
-					Booking booking = bezeroLista.get(pos);
+					Booking booking = BezeroLista.get(pos);
 					if (!taula.getValueAt(pos, 4).equals("")) {
 						double prez = booking.prezioaKalkulatu();
-						if (taula.getValueAt(pos, 4).equals("Erreklamazioa")) {
-							Traveler traveler = booking.getTraveler();
-
-							booking.setStatus("Complained");
-							appFacadeInterface.updateBooking(booking);
-
-							traveler.setIzoztatutakoDirua(traveler.getIzoztatutakoDirua() - prez);
-							appFacadeInterface.updateTraveler(traveler);
-
-							appFacadeInterface.gauzatuEragiketa(traveler.getUsername(), prez, true);
-							appFacadeInterface.addMovement(traveler, "UnfreezeNotComplete", prez);
-
-							Driver driver = appFacadeInterface.getDriver(username);
-							driver.setErreklamaKop(driver.getErreklamaKop() + 1);
-
-							lblErrorea.setText(
-									ResourceBundle.getBundle("Etiquetas").getString("BezeroGUI.ComplaintAccepted"));
-							lblErrorea.setForeground(Color.BLACK);
-
-							model.setValueAt(ResourceBundle.getBundle("Etiquetas").getString("Complained"), pos, 3);
-							model.setValueAt("", pos, 4);
-						} else if (taula.getValueAt(pos, 4).equals("Ez aurkeztua")) {
-							Driver driver = booking.getRide().getDriver();
-							Traveler traveler = booking.getTraveler();
-
-							booking.setStatus("Complained");
-							appFacadeInterface.updateBooking(booking);
-
-							traveler.setIzoztatutakoDirua(traveler.getIzoztatutakoDirua() - prez);
-							traveler.setErreklamaKop(traveler.getErreklamaKop() + 1);
-							appFacadeInterface.updateTraveler(traveler);
-
-							appFacadeInterface.gauzatuEragiketa(driver.getUsername(), prez, true);
-							appFacadeInterface.addMovement(traveler, "UnfreezeCompleteT", 0);
-							appFacadeInterface.addMovement(driver, "UnfreezeCompleteD", prez);
-							lblErrorea.setText(
-									ResourceBundle.getBundle("Etiquetas").getString("BezeroGUI.ComplaintComplete"));
-							lblErrorea.setForeground(Color.BLACK);
-
-							model.setValueAt(ResourceBundle.getBundle("Etiquetas").getString("Complained"), pos, 3);
-							model.setValueAt("", pos, 4);
-						} else {
-							lblErrorea.setForeground(Color.RED);
-							lblErrorea.setText(ResourceBundle.getBundle("Etiquetas")
-									.getString("BezeroGUI.AukeratuEzOsatutakoBidaia"));
-						}
+						laguntzailea(pos, booking, prez, model, lblErrorea, username);
 					} else if (booking.getStatus()
 							.equals(ResourceBundle.getBundle("Etiquetas").getString("Complained"))) {
 						lblErrorea.setForeground(Color.RED);
@@ -229,26 +209,63 @@ public class BezeroGUI extends JFrame {
 
 	}
 
+	private void laguntzailea(int pos, Booking booking, double prez, DefaultTableModel model, JLabel lblErrorea, String username) {
+		if (taula.getValueAt(pos, 4).equals("Erreklamazioa")) {
+			Erreklamazioa(pos, booking, prez, model, lblErrorea, username);
+		} else if (taula.getValueAt(pos, 4).equals("Ez aurkeztua")) {
+			Ezaurkeztua(pos, booking, prez, model, lblErrorea, username);
+		} else {
+			lblErrorea.setForeground(Color.RED);
+			lblErrorea.setText(ResourceBundle.getBundle("Etiquetas")
+					.getString("BezeroGUI.AukeratuEzOsatutakoBidaia"));
+		}
+    }
+	private void Erreklamazioa(int pos, Booking booking, double prez, DefaultTableModel model, JLabel lblErrorea, String username) {
+			Traveler traveler = booking.getTraveler();
+
+			booking.setStatus("Complained");
+			appFacadeInterface.updateBooking(booking);
+
+			traveler.setIzoztatutakoDirua(traveler.getIzoztatutakoDirua() - prez);
+			appFacadeInterface.updateTraveler(traveler);
+
+			appFacadeInterface.gauzatuEragiketa(traveler.getUsername(), prez, true);
+			appFacadeInterface.addMovement(traveler, "UnfreezeNotComplete", prez);
+
+			Driver driver = appFacadeInterface.getDriver(username);
+			driver.setErreklamaKop(driver.getErreklamaKop() + 1);
+
+			lblErrorea.setText(
+					ResourceBundle.getBundle("Etiquetas").getString("BezeroGUI.ComplaintAccepted"));
+			lblErrorea.setForeground(Color.BLACK);
+
+			model.setValueAt(ResourceBundle.getBundle("Etiquetas").getString("Complained"), pos, 3);
+			model.setValueAt("", pos, 4);
+	}
+	private void Ezaurkeztua(int pos, Booking booking, double prez, DefaultTableModel model, JLabel lblErrorea, String username) {
+		Driver driver = booking.getRide().getDriver();
+		Traveler traveler = booking.getTraveler();
+
+		booking.setStatus("Complained");
+		appFacadeInterface.updateBooking(booking);
+
+		traveler.setIzoztatutakoDirua(traveler.getIzoztatutakoDirua() - prez);
+		traveler.setErreklamaKop(traveler.getErreklamaKop() + 1);
+		appFacadeInterface.updateTraveler(traveler);
+
+		appFacadeInterface.gauzatuEragiketa(driver.getUsername(), prez, true);
+		appFacadeInterface.addMovement(traveler, "UnfreezeCompleteT", 0);
+		appFacadeInterface.addMovement(driver, "UnfreezeCompleteD", prez);
+		lblErrorea.setText(
+				ResourceBundle.getBundle("Etiquetas").getString("BezeroGUI.ComplaintComplete"));
+		lblErrorea.setForeground(Color.BLACK);
+
+		model.setValueAt(ResourceBundle.getBundle("Etiquetas").getString("Complained"), pos, 3);
+		model.setValueAt("", pos, 4);
+	}
+	
 	private void jButtonClose_actionPerformed(ActionEvent e) {
 		this.setVisible(false);
 	}
 
-	public String checkStatus(Booking booking) {
-			switch (booking.getStatus()) {
-			case "Completed":
-				return ResourceBundle.getBundle("Etiquetas").getString("Completed");
-			case "Accepted":
-				return ResourceBundle.getBundle("Etiquetas").getString("Accepted");
-			case "Rejected":
-				return ResourceBundle.getBundle("Etiquetas").getString("Rejected");
-			case "NotCompleted":
-				return ResourceBundle.getBundle("Etiquetas").getString("NotCompleted");
-			case "Complained":
-				return ResourceBundle.getBundle("Etiquetas").getString("Complained");
-			case "Valued":
-				return ResourceBundle.getBundle("Etiquetas").getString("Valued");
-			default:
-				return ResourceBundle.getBundle("Etiquetas").getString("NotDefined");
-			}
-	}
 }

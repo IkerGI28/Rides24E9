@@ -34,7 +34,6 @@ public class ErreserbaOnartuGUI extends JFrame {
 
 	public ErreserbaOnartuGUI(String username) {
 
-		BezeroGUI bezGUI = new BezeroGUI(username);
 		setBussinessLogic(LoginGUI.getBusinessLogic());
 		this.setSize(new Dimension(600, 537));
 		this.setResizable(false);
@@ -63,7 +62,30 @@ public class ErreserbaOnartuGUI extends JFrame {
 
 		if (TravelsList != null) {
 			for (Booking booking : TravelsList) {
-				String status=bezGUI.checkStatus(booking);
+				String status;
+				switch (booking.getStatus()) {
+				case "Completed":
+					status = ResourceBundle.getBundle("Etiquetas").getString("Completed");
+					break;
+				case "Accepted":
+					status = ResourceBundle.getBundle("Etiquetas").getString("Accepted");
+					break;
+				case "Rejected":
+					status = ResourceBundle.getBundle("Etiquetas").getString("Rejected");
+					break;
+				case "NotCompleted":
+					status = ResourceBundle.getBundle("Etiquetas").getString("NotCompleted");
+					break;
+				case "Complained":
+					status = ResourceBundle.getBundle("Etiquetas").getString("Complained");
+					break;
+				case "Valued":
+					status = ResourceBundle.getBundle("Etiquetas").getString("Valued");
+					break;
+				default:
+					status = ResourceBundle.getBundle("Etiquetas").getString("NotDefined");
+					break;
+				}
 
 				Object[] rowData = { booking.getBookNumber(), booking.getTraveler().getUsername(),
 						booking.getRide().getFrom(), booking.getRide().getTo(),

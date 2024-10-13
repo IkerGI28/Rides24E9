@@ -108,20 +108,8 @@ public class CreateRideGUI extends JFrame {
 		jLabelError.setBounds(new Rectangle(10, 232, 320, 20));
 		jLabelError.setForeground(Color.red);
 
-		this.getContentPane().add(jLabelMsg, null);
-		this.getContentPane().add(jLabelError, null);
-
-		this.getContentPane().add(jButtonClose, null);
-		this.getContentPane().add(jButtonCreate, null);
-		this.getContentPane().add(comboBoxSeats, null);
-
-		this.getContentPane().add(jLabelSeats, null);
-		this.getContentPane().add(jLabelOrigin, null);
-
-		this.getContentPane().add(jCalendar, null);
-
-		this.getContentPane().add(jLabelPrice, null);
-		this.getContentPane().add(jTextFieldPrice, null);
+		taula_null_ezarri();
+		
 
 		datesWithEventsCurrentMonth = appFacadeInterface.getThisMonthDatesWithRides("a", "b", jCalendar.getDate());
 
@@ -269,4 +257,21 @@ public class CreateRideGUI extends JFrame {
 
 		}
 	}
+	
+	
+	public void taula_null_ezarri() {
+		
+		this.getContentPane().add(jLabelMsg, null);
+		this.getContentPane().add(jLabelError, null);
+		this.getContentPane().add(jButtonClose, null);
+		this.getContentPane().add(jButtonCreate, null);
+		this.getContentPane().add(jLabelOrigin, null);
+		this.getContentPane().add(jCalendar, null);
+		this.getContentPane().add(comboBoxSeats, null);
+		this.getContentPane().add(jLabelSeats, null);
+		this.getContentPane().add(jLabelPrice, null);
+		this.getContentPane().add(jTextFieldPrice, null);
+
+	}
+	
 }

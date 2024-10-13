@@ -501,28 +501,31 @@ public class DataAccess {
 		try {
 			db.getTransaction().begin();
 			User user = getUser(username);
-			if (user != null) {
-				double currentMoney = user.getMoney();
-				if (deposit) {
-					user.setMoney(currentMoney + amount);
-				} else {
-					System.out.println("duen dirua =" + user.getMoney() + "    " +"zenbat atera" +  amount);
-					if ((currentMoney - amount) < 0)
-						user.setMoney(0);
-					else
-						user.setMoney(currentMoney - amount);
-				}
-				db.merge(user);
-				db.getTransaction().commit();
-				return true;
-			}
-			db.getTransaction().commit();
-			return false;
+			return manageGauzatu(user, amount, deposit);
 		} catch (Exception e) {
 			e.printStackTrace();
 			db.getTransaction().rollback();
 			return false;
 		}
+	}
+	public boolean manageGauzatu(User user, double amount, boolean deposit) {
+		if (user != null) {
+			double currentMoney = user.getMoney();
+			if (deposit) {
+				user.setMoney(currentMoney + amount);
+			} else {
+				System.out.println("duen dirua =" + user.getMoney() + "    " +"zenbat atera" +  amount);
+				if ((currentMoney - amount) < 0)
+					user.setMoney(0);
+				else
+					user.setMoney(currentMoney - amount);
+			}
+			db.merge(user);
+			db.getTransaction().commit();
+			return true;
+		}
+		db.getTransaction().commit();
+		return false;
 	}
 
 
