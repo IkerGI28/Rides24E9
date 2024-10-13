@@ -69,30 +69,7 @@ public class BezeroGUI extends JFrame {
 		if (travelList  != null) {
 			for (Booking bo : travelList ) {
 				
-				String status;
-				switch (bo.getStatus()) {
-				case "Completed":
-					status = ResourceBundle.getBundle("Etiquetas").getString("Completed");
-					break;
-				case "Accepted":
-					status = ResourceBundle.getBundle("Etiquetas").getString("Accepted");
-					break;
-				case "Rejected":
-					status = ResourceBundle.getBundle("Etiquetas").getString("Rejected");
-					break;
-				case "NotCompleted":
-					status = ResourceBundle.getBundle("Etiquetas").getString("NotCompleted");
-					break;
-				case "Complained":
-					status = ResourceBundle.getBundle("Etiquetas").getString("Complained");
-					break;
-				case "Valued":
-					status = ResourceBundle.getBundle("Etiquetas").getString("Valued");
-					break;
-				default:
-					status = ResourceBundle.getBundle("Etiquetas").getString("NotDefined");
-					break;
-				}
+				String status=checkStatus(bo);
 				
 				if (bo.getStatus().equals("NotCompleted")) {
 					Complaint er = appFacadeInterface.getComplaintsByBook(bo);
@@ -256,4 +233,22 @@ public class BezeroGUI extends JFrame {
 		this.setVisible(false);
 	}
 
+	public String checkStatus(Booking booking) {
+			switch (booking.getStatus()) {
+			case "Completed":
+				return ResourceBundle.getBundle("Etiquetas").getString("Completed");
+			case "Accepted":
+				return ResourceBundle.getBundle("Etiquetas").getString("Accepted");
+			case "Rejected":
+				return ResourceBundle.getBundle("Etiquetas").getString("Rejected");
+			case "NotCompleted":
+				return ResourceBundle.getBundle("Etiquetas").getString("NotCompleted");
+			case "Complained":
+				return ResourceBundle.getBundle("Etiquetas").getString("Complained");
+			case "Valued":
+				return ResourceBundle.getBundle("Etiquetas").getString("Valued");
+			default:
+				return ResourceBundle.getBundle("Etiquetas").getString("NotDefined");
+			}
+	}
 }

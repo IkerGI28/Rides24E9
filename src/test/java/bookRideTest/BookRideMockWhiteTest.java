@@ -23,6 +23,7 @@ import org.mockito.MockitoAnnotations;
 
 import dataAccess.DataAccess;
 import domain.Driver;
+import domain.OriginDestinationWhen;
 import domain.Ride;
 import domain.Traveler;
 import domain.User;
@@ -90,7 +91,8 @@ public class BookRideMockWhiteTest {
     			
 				sut.addTraveler(travelerTest.getUsername(), travelerTest.getPassword());
                 sut.addDriver(driverTest.getUsername(), driverTest.getPassword());
-            	ride = sut.createRide("Donostia", "Zarautz", date, 4, 10, driverTest.getUsername());
+                OriginDestinationWhen odw=new OriginDestinationWhen("Donostia", "Zarautz", date);
+            	ride = sut.createRide(odw, 4, 10, driverTest.getUsername());
             	driverTest.addRide("Donostia", "Zarautz", date, 4, 10);
     			boolean result = sut.bookRide(travelerTest.getUsername(), ride, 2, 3);
     			assertTrue(!result);
@@ -130,8 +132,8 @@ public class BookRideMockWhiteTest {
     			
 				sut.addTraveler(travelerTest.getUsername(), travelerTest.getPassword());
                 sut.addDriver(driverTest.getUsername(), driverTest.getPassword());
-
-            	ride = sut.createRide("Donostia", "Zarautz", date, 1, 10, driverTest.getUsername());
+                OriginDestinationWhen odw=new OriginDestinationWhen("Donostia", "Zarautz", date);
+            	ride = sut.createRide(odw, 1, 10, driverTest.getUsername());
             	driverTest.addRide("Donostia", "Zarautz", date, 1, 10);
 
 				boolean result = sut.bookRide(travelerTest.getUsername(), ride, 2, 3);
@@ -172,7 +174,8 @@ public class BookRideMockWhiteTest {
     			
             	sut.addTraveler(travelerTest.getUsername(), travelerTest.getPassword());
                 sut.addDriver(driverTest.getUsername(), driverTest.getPassword());
-            	ride = sut.createRide("Donostia", "Zarautz", date, 2, 10, driverTest.getUsername());
+                OriginDestinationWhen odw=new OriginDestinationWhen("Donostia", "Zarautz", date);
+            	ride = sut.createRide(odw, 2, 10, driverTest.getUsername());
             	driverTest.addRide("Donostia", "Zarautz", date, 2, 10);
                 boolean result = sut.bookRide(travelerTest.getUsername(), ride, 2, 3);
                 assertTrue(!result);
@@ -218,7 +221,8 @@ public class BookRideMockWhiteTest {
     			
                 sut.addTraveler(travelerTest.getUsername(), travelerTest.getPassword());
                 sut.addDriver(driverTest.getUsername(), driverTest.getPassword());
-            	ride = sut.createRide("Madrid", "Tolosa", date, 2, 2, driverTest.getUsername());
+                OriginDestinationWhen odw=new OriginDestinationWhen("Madrid", "Tolosa", date);
+            	ride = sut.createRide(odw, 2, 2, driverTest.getUsername());
             	driverTest.addRide("Madrid", "Tolosa", date, 2, 2);
                 boolean result = sut.bookRide(travelerTest.getUsername(), ride, 1, 1);
                 assertTrue(result);

@@ -6,7 +6,6 @@ import businessLogic.BLFacade;
 import domain.Booking;
 import domain.Driver;
 import domain.Traveler;
-
 import java.awt.*;
 import java.util.Date;
 import java.util.List;
@@ -35,6 +34,7 @@ public class EgoeraGUI extends JFrame {
 
 	public EgoeraGUI(String username) {
 
+		BezeroGUI bezGUI = new BezeroGUI(username);
 		setBussinessLogic(LoginGUI.getBusinessLogic());
 		this.setSize(new Dimension(600, 537));
 		this.setResizable(false);
@@ -61,30 +61,7 @@ public class EgoeraGUI extends JFrame {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 
 		for (Booking booking : TravelsList) {
-			String status;
-			switch (booking.getStatus()) {
-			case "Completed":
-				status = ResourceBundle.getBundle("Etiquetas").getString("Completed");
-				break;
-			case "Accepted":
-				status = ResourceBundle.getBundle("Etiquetas").getString("Accepted");
-				break;
-			case "Rejected":
-				status = ResourceBundle.getBundle("Etiquetas").getString("Rejected");
-				break;
-			case "NotCompleted":
-				status = ResourceBundle.getBundle("Etiquetas").getString("NotCompleted");
-				break;
-			case "Complained":
-				status = ResourceBundle.getBundle("Etiquetas").getString("Complained");
-				break;
-			case "Valued":
-				status = ResourceBundle.getBundle("Etiquetas").getString("Valued");
-				break;
-			default:
-				status = ResourceBundle.getBundle("Etiquetas").getString("NotDefined");
-				break;
-			}
+			String status=bezGUI.checkStatus(booking);
 
 			Object[] rowData = { booking.getBookNumber(), booking.getRide().getFrom(), booking.getRide().getTo(),
 					dateFormat.format(booking.getRide().getDate()), status };

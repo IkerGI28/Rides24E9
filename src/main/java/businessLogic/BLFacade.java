@@ -13,6 +13,7 @@ import domain.Driver;
 import domain.ErreklamazioInfo;
 import domain.Complaint;
 import domain.Movement;
+import domain.OriginDestinationWhen;
 import exceptions.RideMustBeLaterThanTodayException;
 import exceptions.RideAlreadyExistException;
 
@@ -59,7 +60,7 @@ public interface BLFacade {
 	 *                                           the driver
 	 */
 	@WebMethod
-	public Ride createRide(String from, String to, Date date, int nPlaces, float price, String driverName)
+	public Ride createRide(OriginDestinationWhen fromtodate, int nPlaces, float price, String driverName)
 			throws RideMustBeLaterThanTodayException, RideAlreadyExistException;
 
 	/**

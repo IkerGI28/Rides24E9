@@ -23,6 +23,7 @@ import org.mockito.MockitoAnnotations;
 
 import dataAccess.DataAccess;
 import domain.Driver;
+import domain.OriginDestinationWhen;
 import domain.Ride;
 import exceptions.RideAlreadyExistException;
 import exceptions.RideMustBeLaterThanTodayException;
@@ -84,10 +85,10 @@ public class CreateRideMockWhiteTest {
 				
 				Mockito.when(db.find(Driver.class, null)).thenReturn(null);
 
-				
+				OriginDestinationWhen odw=new OriginDestinationWhen(rideFrom, rideTo, rideDate);
 				//invoke System Under Test (sut)  
 				sut.open();
-				Ride ride=sut.createRide(rideFrom, rideTo, rideDate, 0, 0, driverUserName);
+				Ride ride=sut.createRide(odw, 0, 0, driverUserName);
 
 				//verify the results
 				assertNull(ride);
@@ -138,10 +139,10 @@ public class CreateRideMockWhiteTest {
 			//configure the state through mocks 
 	        Mockito.when(db.find(Driver.class, driverUsername)).thenReturn(null);
 		
-			
+			OriginDestinationWhen odw=new OriginDestinationWhen(rideFrom, rideTo, rideDate);
 	      //invoke System Under Test (sut)  
 			sut.open();
-		    Ride r=sut.createRide(rideFrom, rideTo, rideDate, 0, 0, driverUsername);
+		    Ride r=sut.createRide(odw, 0, 0, driverUsername);
 			sut.close();
 			
 			assertNull(r);
@@ -182,10 +183,10 @@ public class CreateRideMockWhiteTest {
 				driver=new Driver(driverUserName,"123");
 		        Mockito.when(db.find(Driver.class, driver.getUsername())).thenReturn(driver);
 
-				
+				OriginDestinationWhen odw=new OriginDestinationWhen(rideFrom, rideTo, rideDate);
 				//invoke System Under Test (sut)  
 				sut.open();
-				Ride ride=sut.createRide(rideFrom, rideTo, rideDate, 0, 0, driverUserName);
+				Ride ride=sut.createRide(odw, 0, 0, driverUserName);
 
 				//verify the results
 				assertNull(ride);
@@ -236,10 +237,10 @@ public class CreateRideMockWhiteTest {
 			//configure the state through mocks 
 	        Mockito.when(db.find(Driver.class, driver.getUsername())).thenReturn(driver);
 		
-			
+			OriginDestinationWhen odw=new OriginDestinationWhen(rideFrom, rideTo, rideDate);
 			//invoke System Under Test (sut)  
 			sut.open();
-		    sut.createRide(rideFrom, rideTo, rideDate, 0, 0, driverUsername);
+		    sut.createRide(odw, 0, 0, driverUsername);
 			sut.close();
 			
 			fail();
@@ -281,10 +282,10 @@ public class CreateRideMockWhiteTest {
 
 			//configure the state through mocks 
 	        Mockito.when(db.find(Driver.class, driver1.getUsername())).thenReturn(driver1);
-					
+			OriginDestinationWhen odw=new OriginDestinationWhen(rideFrom, rideTo, rideDate);
 			//invoke System Under Test (sut)  
 			sut.open();
-			Ride ride=sut.createRide(rideFrom, rideTo, rideDate, 0, 0, driverUsername);
+			Ride ride=sut.createRide(odw, 0, 0, driverUsername);
 			sut.close();
 			//verify the results
 			assertNotNull(ride);
