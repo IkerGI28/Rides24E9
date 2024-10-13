@@ -17,7 +17,7 @@ public class gauzatuEragiketaBlackTest {
 	public void test1() {
 		try {
 			sut.open();
-			sut.addDriver(driverTest.getUsername(), driverTest.getPassword());
+			sut.addUser(driverTest.getUsername(), driverTest.getPassword(),0);
 			sut.gauzatuEragiketa(driverTest.getUsername(), 10, true);
 			boolean emaitza  = sut.gauzatuEragiketa(driverTest.getUsername(), 30, false);
 			assertEquals(true, emaitza);
@@ -32,9 +32,9 @@ public class gauzatuEragiketaBlackTest {
 	//erabiltzailea datubasean eta dirua egoki ateratzen du
 	@Test
 	public void test2() {
-		try {
+		try { 
 			sut.open();
-			sut.addDriver(driverTest.getUsername(), driverTest.getPassword());
+			sut.addUser(driverTest.getUsername(), driverTest.getPassword(),0);
 			sut.gauzatuEragiketa(driverTest.getUsername(), 40, true);
 			boolean emaitza = sut.gauzatuEragiketa(driverTest.getUsername(), amount, false);
 			assertEquals(true, emaitza);
@@ -65,7 +65,7 @@ public class gauzatuEragiketaBlackTest {
 	public void test4() {
 		try {
 			sut.open();
-			sut.addDriver(driverTest.getUsername(), driverTest.getPassword());
+			sut.addUser(driverTest.getUsername(), driverTest.getPassword(),0);
 			sut.gauzatuEragiketa(driverTest.getUsername(), 20, true);
 			boolean emaitza = sut.gauzatuEragiketa(driverTest.getUsername(), -10, true);
 			assertEquals(true, emaitza);

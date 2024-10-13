@@ -106,9 +106,7 @@ public interface BLFacade {
 
 	public String getMotaByUsername(String erab);
 
-	public boolean addDriver(String username, String password);
-
-	public boolean addTraveler(String username, String password);
+	public boolean addUser(String username, String password, int i);
 
 	public boolean gauzatuEragiketa(String username, double amount, boolean b);
 

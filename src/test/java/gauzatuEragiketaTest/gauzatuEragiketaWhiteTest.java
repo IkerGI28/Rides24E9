@@ -22,7 +22,7 @@ public class gauzatuEragiketaWhiteTest {
 			assertEquals(false, emaitza);
 			sut.close();
 		} catch (Exception e) {
-			sut.close();
+			sut.close(); 
 		}
 
 	}
@@ -44,7 +44,7 @@ public class gauzatuEragiketaWhiteTest {
 	public void test3() {
 		try {
 			sut.open();
-			sut.addDriver(driverTest.getUsername(), driverTest.getPassword());
+			sut.addUser(driverTest.getUsername(), driverTest.getPassword(),0);
 			boolean emaitza = sut.gauzatuEragiketa(driverTest.getUsername(), amount, true);
 			assertEquals(true, emaitza);
 		} catch (Exception e) {
@@ -60,7 +60,7 @@ public class gauzatuEragiketaWhiteTest {
 	public void test4() { 
 		try {
 			sut.open();
-			sut.addDriver(driverTest.getUsername(), driverTest.getPassword());
+			sut.addUser(driverTest.getUsername(), driverTest.getPassword(),0);
 			sut.gauzatuEragiketa(driverTest.getUsername(), amount, true);
 			boolean emaitza = sut.gauzatuEragiketa(driverTest.getUsername(), 40, false);
 			assertEquals(true, emaitza);
@@ -77,7 +77,7 @@ public class gauzatuEragiketaWhiteTest {
 	public void test5() {
 		try {
 			sut.open();
-			sut.addDriver(driverTest.getUsername(), driverTest.getPassword());
+			sut.addUser(driverTest.getUsername(), driverTest.getPassword(),0);
 			sut.gauzatuEragiketa(driverTest.getUsername(), 40, true);
 			boolean emaitza = sut.gauzatuEragiketa(driverTest.getUsername(), 20, false);
 			assertEquals(true, emaitza);

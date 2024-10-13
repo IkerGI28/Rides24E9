@@ -22,7 +22,7 @@ public class GetRidesByDriverBDWhiteTest {
 	Driver driverTest = new Driver("driverTest", "123456");
 	
     LocalDate localDate = LocalDate.of(2026, 10, 2);
-    Date data = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+    Date data = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant()); 
 
 	// Test case to test that the driver is not in the Data base
 	@Test
@@ -41,7 +41,7 @@ public class GetRidesByDriverBDWhiteTest {
 	public void test2() {
 		try {
 			sut.open();
-			sut.addDriver(driverTest.getUsername(), driverTest.getPassword());
+			sut.addUser(driverTest.getUsername(), driverTest.getPassword(),0);
 			List<Ride> rides = sut.getRidesByDriver(driverTest.getUsername());
 			assertTrue(rides.isEmpty());
 		} finally {
@@ -55,7 +55,7 @@ public class GetRidesByDriverBDWhiteTest {
 	public void test3() {
 		try {
 			sut.open();
-			sut.addDriver(driverTest.getUsername(), driverTest.getPassword());
+			sut.addUser(driverTest.getUsername(), driverTest.getPassword(),0);
 			try {
 				Ride ride = sut.createRide("Bilbao", "Donostia", data, 4, (float) 1.5, driverTest.getUsername());
 				sut.cancelRide(ride);
@@ -76,7 +76,7 @@ public class GetRidesByDriverBDWhiteTest {
 	public void test4() {
 		try {
 			sut.open();
-			sut.addDriver(driverTest.getUsername(), driverTest.getPassword());
+			sut.addUser(driverTest.getUsername(), driverTest.getPassword(),0);
 			try {
 				sut.createRide("Bilbao", "Donostia", data, 4, (float) 1.5, driverTest.getUsername());
 				List<Ride> rides = sut.getRidesByDriver(driverTest.getUsername());

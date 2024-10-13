@@ -37,7 +37,7 @@ public class BLFacadeImplementation implements BLFacade {
 		// dbManager.close();
 
 	}
-
+ 
 	public BLFacadeImplementation(DataAccess da) {
 
 		System.out.println("Creating BLFacadeImplementation instance with DataAccess parameter");
@@ -185,20 +185,13 @@ public class BLFacadeImplementation implements BLFacade {
 	}
 
 	@Override
-	public boolean addDriver(String username, String password) {
+	public boolean addUser(String username, String password, int i) {
 		dbManager.open();
-		boolean ondo = dbManager.addDriver(username, password);
+		boolean ondo = dbManager.addUser(username, password,i);
 		dbManager.close();
 		return ondo;
 	}
 
-	@Override
-	public boolean addTraveler(String username, String password) {
-		dbManager.open();
-		boolean ondo = dbManager.addTraveler(username, password);
-		dbManager.close();
-		return ondo;
-	}
 
 	@Override
 	public boolean gauzatuEragiketa(String username, double amount, boolean deposit) {

@@ -11,7 +11,7 @@ public class RegisterGUI extends JFrame {
     private static final long serialVersionUID = 1L;
 
     private JTextField fieldUser = new JTextField();
-    private JPasswordField fieldPass = new JPasswordField();
+    private JPasswordField fieldPass = new JPasswordField(); 
     private JComboBox<String> comboBoxType = new JComboBox<String>();
 
     private JLabel jLabelError = new JLabel();
@@ -86,9 +86,9 @@ public class RegisterGUI extends JFrame {
                 }
                 boolean added=false;
                 if(userType.equals(ResourceBundle.getBundle("Etiquetas").getString("RegisterGUI.Driver")))
-                	added = appFacadeInterface.addDriver(username, password);
+                	added = appFacadeInterface.addUser(username, password,0);
                 else if (userType.equals(ResourceBundle.getBundle("Etiquetas").getString("RegisterGUI.Traveler")))
-                	added = appFacadeInterface.addTraveler(username, password);
+                	added = appFacadeInterface.addUser(username, password,1);
                 
                 if (added) {
                 	jLabelError.setText(ResourceBundle.getBundle("Etiquetas").getString("RegisterGUI.Ondo"));

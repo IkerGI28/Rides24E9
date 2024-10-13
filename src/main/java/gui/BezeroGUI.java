@@ -50,7 +50,7 @@ public class BezeroGUI extends JFrame {
 		getContentPane().setLayout(new BorderLayout(0, 0));
 
 		// Lista
-		taula = new JTable();
+		taula = new JTable(); 
 		List<Booking> travelList = appFacadeInterface.getBookingFromDriver(username);
 		List<Booking> BezeroLista = new ArrayList<>();
 
@@ -162,7 +162,9 @@ public class BezeroGUI extends JFrame {
 
 			}
 		});
-
+		
+	
+		
 		this.getContentPane().add(jButtonBaloratu, BorderLayout.WEST);
 
 		// Erraklamazio botoia
@@ -175,52 +177,7 @@ public class BezeroGUI extends JFrame {
 					Booking booking = BezeroLista.get(pos);
 					if (!taula.getValueAt(pos, 4).equals("")) {
 						double prez = booking.prezioaKalkulatu();
-						if (taula.getValueAt(pos, 4).equals("Erreklamazioa")) {
-							Traveler traveler = booking.getTraveler();
-
-							booking.setStatus("Complained");
-							appFacadeInterface.updateBooking(booking);
-
-							traveler.setIzoztatutakoDirua(traveler.getIzoztatutakoDirua() - prez);
-							appFacadeInterface.updateTraveler(traveler);
-
-							appFacadeInterface.gauzatuEragiketa(traveler.getUsername(), prez, true);
-							appFacadeInterface.addMovement(traveler, "UnfreezeNotComplete", prez);
-
-							Driver driver = appFacadeInterface.getDriver(username);
-							driver.setErreklamaKop(driver.getErreklamaKop() + 1);
-
-							lblErrorea.setText(
-									ResourceBundle.getBundle("Etiquetas").getString("BezeroGUI.ComplaintAccepted"));
-							lblErrorea.setForeground(Color.BLACK);
-
-							model.setValueAt(ResourceBundle.getBundle("Etiquetas").getString("Complained"), pos, 3);
-							model.setValueAt("", pos, 4);
-						} else if (taula.getValueAt(pos, 4).equals("Ez aurkeztua")) {
-							Driver driver = booking.getRide().getDriver();
-							Traveler traveler = booking.getTraveler();
-
-							booking.setStatus("Complained");
-							appFacadeInterface.updateBooking(booking);
-
-							traveler.setIzoztatutakoDirua(traveler.getIzoztatutakoDirua() - prez);
-							traveler.setErreklamaKop(traveler.getErreklamaKop() + 1);
-							appFacadeInterface.updateTraveler(traveler);
-
-							appFacadeInterface.gauzatuEragiketa(driver.getUsername(), prez, true);
-							appFacadeInterface.addMovement(traveler, "UnfreezeCompleteT", 0);
-							appFacadeInterface.addMovement(driver, "UnfreezeCompleteD", prez);
-							lblErrorea.setText(
-									ResourceBundle.getBundle("Etiquetas").getString("BezeroGUI.ComplaintComplete"));
-							lblErrorea.setForeground(Color.BLACK);
-
-							model.setValueAt(ResourceBundle.getBundle("Etiquetas").getString("Complained"), pos, 3);
-							model.setValueAt("", pos, 4);
-						} else {
-							lblErrorea.setForeground(Color.RED);
-							lblErrorea.setText(ResourceBundle.getBundle("Etiquetas")
-									.getString("BezeroGUI.AukeratuEzOsatutakoBidaia"));
-						}
+						laguntzailea(pos, booking, prez, model, lblErrorea, username);
 					} else if (booking.getStatus()
 							.equals(ResourceBundle.getBundle("Etiquetas").getString("Complained"))) {
 						lblErrorea.setForeground(Color.RED);
@@ -252,6 +209,61 @@ public class BezeroGUI extends JFrame {
 
 	}
 
+	private void laguntzailea(int pos, Booking booking, double prez, DefaultTableModel model, JLabel lblErrorea, String username) {
+		if (taula.getValueAt(pos, 4).equals("Erreklamazioa")) {
+			Erreklamazioa(pos, booking, prez, model, lblErrorea, username);
+		} else if (taula.getValueAt(pos, 4).equals("Ez aurkeztua")) {
+			Ezaurkeztua(pos, booking, prez, model, lblErrorea, username);
+		} else {
+			lblErrorea.setForeground(Color.RED);
+			lblErrorea.setText(ResourceBundle.getBundle("Etiquetas")
+					.getString("BezeroGUI.AukeratuEzOsatutakoBidaia"));
+		}
+    }
+	private void Erreklamazioa(int pos, Booking booking, double prez, DefaultTableModel model, JLabel lblErrorea, String username) {
+			Traveler traveler = booking.getTraveler();
+
+			booking.setStatus("Complained");
+			appFacadeInterface.updateBooking(booking);
+
+			traveler.setIzoztatutakoDirua(traveler.getIzoztatutakoDirua() - prez);
+			appFacadeInterface.updateTraveler(traveler);
+
+			appFacadeInterface.gauzatuEragiketa(traveler.getUsername(), prez, true);
+			appFacadeInterface.addMovement(traveler, "UnfreezeNotComplete", prez);
+
+			Driver driver = appFacadeInterface.getDriver(username);
+			driver.setErreklamaKop(driver.getErreklamaKop() + 1);
+
+			lblErrorea.setText(
+					ResourceBundle.getBundle("Etiquetas").getString("BezeroGUI.ComplaintAccepted"));
+			lblErrorea.setForeground(Color.BLACK);
+
+			model.setValueAt(ResourceBundle.getBundle("Etiquetas").getString("Complained"), pos, 3);
+			model.setValueAt("", pos, 4);
+	}
+	private void Ezaurkeztua(int pos, Booking booking, double prez, DefaultTableModel model, JLabel lblErrorea, String username) {
+		Driver driver = booking.getRide().getDriver();
+		Traveler traveler = booking.getTraveler();
+
+		booking.setStatus("Complained");
+		appFacadeInterface.updateBooking(booking);
+
+		traveler.setIzoztatutakoDirua(traveler.getIzoztatutakoDirua() - prez);
+		traveler.setErreklamaKop(traveler.getErreklamaKop() + 1);
+		appFacadeInterface.updateTraveler(traveler);
+
+		appFacadeInterface.gauzatuEragiketa(driver.getUsername(), prez, true);
+		appFacadeInterface.addMovement(traveler, "UnfreezeCompleteT", 0);
+		appFacadeInterface.addMovement(driver, "UnfreezeCompleteD", prez);
+		lblErrorea.setText(
+				ResourceBundle.getBundle("Etiquetas").getString("BezeroGUI.ComplaintComplete"));
+		lblErrorea.setForeground(Color.BLACK);
+
+		model.setValueAt(ResourceBundle.getBundle("Etiquetas").getString("Complained"), pos, 3);
+		model.setValueAt("", pos, 4);
+	}
+	
 	private void jButtonClose_actionPerformed(ActionEvent e) {
 		this.setVisible(false);
 	}

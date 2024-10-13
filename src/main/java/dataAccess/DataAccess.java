@@ -27,7 +27,7 @@ public class DataAccess {
 	private EntityManager db;
 	private EntityManagerFactory emf;
 
-	ConfigXML c = ConfigXML.getInstance();
+	ConfigXML c = ConfigXML.getInstance(); 
 	
 	private String adminPass="admin";
 
@@ -453,7 +453,7 @@ public class DataAccess {
 		} 
 	}
 
-	public boolean addDriver(String username, String password) {
+	public boolean addUser(String username, String password, int i) {
 		try {
 			db.getTransaction().begin();
 			Driver existingDriver = getDriver(username);
@@ -461,65 +461,54 @@ public class DataAccess {
 			if (existingDriver != null || existingTraveler != null) {
 				return false;
 			}
-
-			Driver driver = new Driver(username, password);
-			db.persist(driver);
-			db.getTransaction().commit();
-			return true;
-		} catch (Exception e) {
-			e.printStackTrace();
-			db.getTransaction().rollback();
-			return false;
-		}
-	}
-
-	public boolean addTraveler(String username, String password) {
-		try {
-			db.getTransaction().begin();
-
-			Driver existingDriver = getDriver(username);
-			Traveler existingTraveler = getTraveler(username);
-			if (existingDriver != null || existingTraveler != null) {
-				return false;
+			if (i == 0) {
+				Driver driver = new Driver(username, password);
+				db.persist(driver);
+				db.getTransaction().commit();
+				return true;
+			} else {
+				Traveler traveler = new Traveler(username, password);
+				db.persist(traveler);
+				db.getTransaction().commit();
+				return true;
 			}
-
-			Traveler traveler = new Traveler(username, password);
-			db.persist(traveler);
-			db.getTransaction().commit();
-			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
 			db.getTransaction().rollback();
 			return false;
 		}
 	}
+
 
 	public boolean gauzatuEragiketa(String username, double amount, boolean deposit) {
 		try {
 			db.getTransaction().begin();
 			User user = getUser(username);
-			if (user != null) {
-				double currentMoney = user.getMoney();
-				if (deposit) {
-					user.setMoney(currentMoney + amount);
-				} else {
-					System.out.println("duen dirua =" + user.getMoney() + "    " +"zenbat atera" +  amount);
-					if ((currentMoney - amount) < 0)
-						user.setMoney(0);
-					else
-						user.setMoney(currentMoney - amount);
-				}
-				db.merge(user);
-				db.getTransaction().commit();
-				return true;
-			}
-			db.getTransaction().commit();
-			return false;
+			return manageGauzatu(user, amount, deposit);
 		} catch (Exception e) {
 			e.printStackTrace();
 			db.getTransaction().rollback();
 			return false;
 		}
+	}
+	public boolean manageGauzatu(User user, double amount, boolean deposit) {
+		if (user != null) {
+			double currentMoney = user.getMoney();
+			if (deposit) {
+				user.setMoney(currentMoney + amount);
+			} else {
+				System.out.println("duen dirua =" + user.getMoney() + "    " +"zenbat atera" +  amount);
+				if ((currentMoney - amount) < 0)
+					user.setMoney(0);
+				else
+					user.setMoney(currentMoney - amount);
+			}
+			db.merge(user);
+			db.getTransaction().commit();
+			return true;
+		}
+		db.getTransaction().commit();
+		return false;
 	}
 
 	public void addMovement(User user, String eragiketa, double amount) {
