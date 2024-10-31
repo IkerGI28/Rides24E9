@@ -137,12 +137,12 @@ public class CreateRideGUI extends JFrame {
 			comboBoxcars.addItem(kotxe.getMatrikula());
 		}
 
-		comboBoxSeats.removeAllItems();
+		/*comboBoxSeats.removeAllItems();
 		String matr = (String) comboBoxcars.getSelectedItem();
 		int eserKopKotxe = appFacadeInterface.getKotxeByMatrikula(matr).getEserlekuak();
 		for (int i = eserKopKotxe; i >= 1; i--) {
 			comboBoxSeats.addItem(i);
-		}
+		}*/
 
 		comboBoxcars.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

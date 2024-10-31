@@ -13,6 +13,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
+import iterator.ExtendedIterator;
+import iterator.DepartCitiesExtendedIterator;
 
 import configuration.ConfigXML;
 import configuration.UtilDate;
@@ -207,6 +209,12 @@ public class DataAccess {
 		List<String> cities = query.getResultList();
 		return cities;
 
+	}
+	
+	public ExtendedIterator<String> getDepartingCitiesIterator() {
+		TypedQuery<Object> query = db.createQuery("SELECT DISTINCT r.from FROM Ride r ORDER BY r.from", Object.class);
+		List<Object> cities = query.getResultList();
+		return new DepartCitiesExtendedIterator(cities);
 	}
 
 	/**
