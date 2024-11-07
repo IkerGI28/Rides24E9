@@ -6,8 +6,9 @@ import domain.Ride;
 import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableModel;
 
-public class DriverAdapter extends AbstractTableModel{
+public class DriverAdapter extends AbstractTableModel implements TableModel {
 	protected Driver driver;
 	protected String[] columnNames = new String[] { "from", "to", "Date", "places","price" };
 	public DriverAdapter(Driver driver) {
