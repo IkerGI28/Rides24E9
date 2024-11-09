@@ -1972,9 +1972,9 @@
 										"$ref": "AAAAAAGS6EXh4dxKwb0="
 									},
 									"font": "Arial;13;0",
-									"left": 834,
+									"left": 823,
 									"top": 349,
-									"width": 53.12353515625,
+									"width": 74.05810546875,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 15,
@@ -1982,7 +1982,7 @@
 										"$ref": "AAAAAAGS6EXh4dxMIBc="
 									},
 									"edgePosition": 1,
-									"text": "+extends"
+									"text": "+implements"
 								},
 								{
 									"_type": "EdgeLabelView",
@@ -2995,7 +2995,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGS6EPEYdiqbI8="
 							},
-							"name": "extends",
+							"name": "implements",
 							"source": {
 								"$ref": "AAAAAAGS6EPEYdiqbI8="
 							},
