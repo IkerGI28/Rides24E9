@@ -1,4 +1,4 @@
-package businessLogic;
+package factorymethod;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -6,18 +6,21 @@ import java.net.URL;
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
 
+import businessLogic.BLFacade;
+import businessLogic.BLFacadeImplementation;
 import configuration.ConfigXML;
 import dataAccess.DataAccess;
 
 public class Factory {
 
+	
 	public BLFacade createBLFacade(ConfigXML c) throws MalformedURLException {
 			if (c.isBusinessLogicLocal()) {
 				DataAccess da = new DataAccess();
 				return new BLFacadeImplementation(da);
 			} else {
-				String serviceName = "http://" + c.getBusinessLogicNode() + ":" + c.getBusinessLogicPort() + "/ws/"
-						+ c.getBusinessLogicName() + "?wsdl";
+				String serviceName = "http://" + c.getBusinessLogicNode() + ":" + c.getBusinessLogicPort() + 
+				"/ws/" + c.getBusinessLogicName() + "?wsdl";
 
 				URL url;
 

@@ -9,9 +9,9 @@ import javax.xml.ws.Service;
 
 import configuration.ConfigXML;
 import dataAccess.DataAccess;
+import factorymethod.Factory;
 import businessLogic.BLFacade;
 import businessLogic.BLFacadeImplementation;
-import businessLogic.Factory;
 
 public class ApplicationLauncher {
 
