@@ -1,17 +1,26 @@
 package iterator;
 
+import java.net.MalformedURLException;
+
 import businessLogic.BLFacade;
 import businessLogic.BLFacadeImplementation;
+import configuration.ConfigXML;
 import dataAccess.DataAccess;
+import factorymethod.Factory;
 
 public class Main {
 
 	public static void main(String[] args) {
 		//The BL is	local
-		boolean isLocal = true;
-		DataAccess da = new DataAccess();
-		BLFacade blFacade = new BLFacadeImplementation(da);
-		ExtendedIterator<String> i = blFacade.getDepartingCitiesIterator();
+		ConfigXML conf = ConfigXML.getInstance();
+		Factory f = new Factory();
+		BLFacade appFacadeInterface = null;
+		try {
+			appFacadeInterface = f.createBLFacade(conf);
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+		ExtendedIterator<String> i = appFacadeInterface.getDepartingCitiesIterator();
 		String c;
 		System.out.println("_____________________");
 		System.out.println("FROM LAST TO FIRST");
